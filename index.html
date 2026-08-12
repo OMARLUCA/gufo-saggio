@@ -17,6 +17,7 @@
     --forest-light: #4C7160;
     --gold: #C9950F;
     --dusk: #5B6C9E;
+    --red: #A8432D;
   }
 
   * { box-sizing: border-box; }
@@ -111,7 +112,7 @@
     align-items: flex-start;
     gap: 8px;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
-    font-family: inherit;
+    font: inherit;
     cursor: pointer;
     width: 100%;
     text-align: left;
@@ -152,7 +153,8 @@
   }
 
   #view-argomenti[hidden],
-  #view-home[hidden] {
+  #view-home[hidden],
+  #view-esercizio[hidden] {
     display: none;
   }
 
@@ -199,6 +201,32 @@
     flex-direction: column;
     gap: 4px;
     margin-bottom: 12px;
+    width: 100%;
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .argomento-card:hover,
+  .argomento-card:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(47, 75, 60, 0.1);
+  }
+
+  .argomento-card:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 2px;
+  }
+
+  .argomento-card:disabled {
+    cursor: default;
+    opacity: 0.6;
+  }
+
+  .argomento-card:disabled:hover {
+    transform: none;
+    box-shadow: none;
   }
 
   .argomento-nome {
@@ -213,6 +241,173 @@
     color: var(--ink-soft);
   }
 
+  /* Esercizio: matematica */
+
+  .math-card {
+    background: #fff;
+    border: 1px solid var(--parchment-alt);
+    border-radius: 20px;
+    padding: 36px 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+    margin-bottom: 20px;
+  }
+
+  .colonna {
+    font-family: 'Fraunces', serif;
+    font-size: 34px;
+    font-weight: 600;
+    color: var(--ink);
+    text-align: right;
+    min-width: 140px;
+  }
+
+  .colonna-numero { padding: 2px 0; }
+
+  .colonna-con-operatore { position: relative; }
+
+  .colonna-con-operatore .operatore {
+    position: absolute;
+    left: -32px;
+    color: var(--gold);
+  }
+
+  .colonna-linea {
+    border-top: 3px solid var(--forest);
+    margin-top: 6px;
+  }
+
+  .colonna .risposta-input {
+    width: 100%;
+    text-align: right;
+    margin-top: 10px;
+  }
+
+  .riga-equazione {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .riga-equazione .operatore { color: var(--gold); }
+
+  .risposta-input {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 600;
+    width: 84px;
+    text-align: center;
+    padding: 8px 4px;
+    border: 2px solid var(--parchment-alt);
+    border-radius: 12px;
+    color: var(--forest);
+    background: var(--parchment);
+  }
+
+  .risposta-input:focus {
+    outline: 3px solid var(--gold);
+    outline-offset: 1px;
+    border-color: var(--gold);
+  }
+
+  .esercizio-feedback {
+    font-size: 18px;
+    font-weight: 700;
+    min-height: 24px;
+    text-align: center;
+    margin: 0 0 16px;
+  }
+
+  .feedback-ok { color: var(--forest-light); }
+  .feedback-no { color: var(--red); }
+
+  .esercizio-azioni { display: flex; justify-content: center; }
+
+  .btn-primario {
+    background: var(--forest);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 14px 28px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.1s ease, background 0.15s ease;
+  }
+
+  .btn-primario:hover { background: var(--forest-light); }
+  .btn-primario:active { transform: scale(0.97); }
+
+  .btn-primario:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 2px;
+  }
+
+  .btn-primario:disabled { opacity: 0.5; cursor: default; }
+
+  /* Esercizio: lettura sillabe */
+
+  .lettura-card {
+    background: #fff;
+    border: 1px solid var(--parchment-alt);
+    border-radius: 20px;
+    padding: 44px 28px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .lettura-istruzione {
+    color: var(--ink-soft);
+    font-size: 15px;
+    margin: 0 0 22px;
+  }
+
+  .lettura-sillaba {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 64px;
+    color: var(--forest);
+    letter-spacing: 0.02em;
+  }
+
+  .esercizio-azioni-doppie {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+  }
+
+  .btn-esito {
+    flex: 1;
+    max-width: 200px;
+    border: none;
+    border-radius: 14px;
+    padding: 16px 18px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+  }
+
+  .btn-esito:active { transform: scale(0.96); }
+
+  .btn-esito:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 2px;
+  }
+
+  .btn-esito-si { background: var(--forest); color: #fff; }
+  .btn-esito-no { background: var(--parchment-alt); color: var(--ink); }
+
   #status {
     margin-top: 40px;
     text-align: center;
@@ -222,11 +417,12 @@
   }
 
   .status-ok { color: var(--forest-light); }
-  .status-err { color: #A8432D; }
+  .status-err { color: var(--red); }
 
   @media (max-width: 420px) {
     #greeting-name { font-size: 26px; }
     .wordmark { font-size: 24px; }
+    .lettura-sillaba { font-size: 52px; }
   }
 </style>
 </head>
@@ -274,6 +470,15 @@
       <div id="argomenti-list"></div>
     </section>
 
+    <section id="view-esercizio" hidden>
+      <a href="#" id="back-link-esercizio" class="back-link">← Torna agli argomenti</a>
+      <div class="argomenti-header">
+        <span id="esercizio-header-icona" class="argomenti-header-icona"></span>
+        <h2 id="esercizio-header-nome" class="argomenti-header-nome"></h2>
+      </div>
+      <div id="esercizio-body"></div>
+    </section>
+
     <p id="status"></p>
   </main>
 
@@ -296,12 +501,25 @@
       return NOMI_CLASSE[n] || `Classe ${n}`
     }
 
+    const VIEW_IDS = ['view-home', 'view-argomenti', 'view-esercizio']
+
+    function showView(id) {
+      for (const v of VIEW_IDS) {
+        $('#' + v).hidden = (v !== id)
+      }
+    }
+
     const state = {
       figlio: null,
       materie: [],
       argomenti: [],
-      eserciziCount: new Map()
+      esercizi: [],
+      progressi: [],
+      eserciziCount: new Map(),
+      sessione: { argomentoId: null, esercizioCorrente: null, ultimoEsercizioId: null }
     }
+
+    // ---------- Home ----------
 
     function renderGreeting() {
       const figlio = state.figlio
@@ -335,6 +553,8 @@
       }
     }
 
+    // ---------- Argomenti ----------
+
     function renderArgomenti(materiaId) {
       const materia = state.materie.find(m => m.id === materiaId)
       if (!materia) { location.hash = ''; return }
@@ -356,27 +576,239 @@
 
       for (const a of argomentiMateria) {
         const count = state.eserciziCount.get(a.id) || 0
-        const item = document.createElement('div')
+        const disabilitato = count === 0
+        const item = document.createElement('button')
+        item.type = 'button'
         item.className = 'argomento-card'
+        item.disabled = disabilitato
         item.innerHTML = `
           <span class="argomento-nome">${a.nome}</span>
-          <span class="argomento-meta">${count} ${count === 1 ? 'esercizio' : 'esercizi'} · presto si potrà iniziare</span>
+          <span class="argomento-meta">${count} ${count === 1 ? 'esercizio' : 'esercizi'}${disabilitato ? '' : ' · Inizia →'}</span>
         `
+        if (!disabilitato) {
+          item.addEventListener('click', () => { location.hash = `#argomento/${a.id}` })
+        }
         list.appendChild(item)
       }
     }
 
-    function router() {
-      const match = location.hash.match(/^#materia\/(.+)$/)
-      if (match) {
-        $('#view-home').hidden = true
-        $('#view-argomenti').hidden = false
-        renderArgomenti(match[1])
+    // ---------- Esercizio: selezione pesata ----------
+
+    function pesoEsercizio(esercizioId) {
+      const tentativi = state.progressi
+        .filter(p => p.esercizio_id === esercizioId)
+        .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
+      if (!tentativi.length) return 2
+      const errori = tentativi.filter(t => !t.corretto).length
+      const ultimo = tentativi[tentativi.length - 1]
+      let peso = 1 + errori * 1.5
+      if (ultimo.corretto) peso *= 0.4
+      return Math.max(peso, 0.3)
+    }
+
+    function pickEsercizio(argomentoId, escludiId) {
+      let pool = state.esercizi.filter(e => e.argomento_id === argomentoId)
+      if (!pool.length) return null
+      if (pool.length > 1 && escludiId) {
+        pool = pool.filter(e => e.id !== escludiId)
+      }
+      const pesi = pool.map(e => pesoEsercizio(e.id))
+      const totale = pesi.reduce((a, b) => a + b, 0)
+      let r = Math.random() * totale
+      for (let i = 0; i < pool.length; i++) {
+        r -= pesi[i]
+        if (r <= 0) return pool[i]
+      }
+      return pool[pool.length - 1]
+    }
+
+    // ---------- Esercizio: avvio e render ----------
+
+    function avviaEsercizio(argomentoId) {
+      const argomento = state.argomenti.find(a => a.id === argomentoId)
+      if (!argomento) { location.hash = ''; return }
+      const materia = state.materie.find(m => m.id === argomento.materia_id)
+
+      $('#esercizio-header-icona').textContent = materia?.icona || '📚'
+      $('#esercizio-header-nome').textContent = argomento.nome
+      $('#back-link-esercizio').dataset.target = materia ? `#materia/${materia.id}` : ''
+
+      state.sessione.argomentoId = argomentoId
+      const esercizio = pickEsercizio(argomentoId, state.sessione.ultimoEsercizioId)
+
+      if (!esercizio) {
+        $('#esercizio-body').innerHTML = '<p class="empty">Nessun esercizio disponibile per questo argomento.</p>'
+        return
+      }
+
+      state.sessione.esercizioCorrente = esercizio
+      renderEsercizio(esercizio)
+    }
+
+    function renderEsercizio(es) {
+      const container = $('#esercizio-body')
+      container.innerHTML = ''
+
+      if (es.tipo === 'risposta_libera') {
+        renderEsercizioMatematica(es, container)
+      } else if (es.tipo === 'lettura_supervisionata') {
+        renderEsercizioLettura(es, container)
       } else {
-        $('#view-home').hidden = false
-        $('#view-argomenti').hidden = true
+        container.innerHTML = '<p class="empty">Tipo di esercizio non ancora supportato.</p>'
       }
     }
+
+    // ---------- Esercizio: matematica ----------
+
+    function renderEsercizioMatematica(es, container) {
+      const c = es.contenuto
+      const wrap = document.createElement('div')
+      wrap.className = 'math-card'
+
+      if (c.formato === 'colonna') {
+        wrap.innerHTML = `
+          <div class="colonna">
+            <div class="colonna-numero">${c.operando1}</div>
+            <div class="colonna-numero colonna-con-operatore"><span class="operatore">${c.operatore}</span>${c.operando2}</div>
+            <div class="colonna-linea"></div>
+            <input type="text" inputmode="numeric" pattern="[0-9]*" class="risposta-input" id="risposta-input" placeholder="?" autocomplete="off">
+          </div>
+        `
+      } else {
+        wrap.innerHTML = `
+          <div class="riga-equazione">
+            <span>${c.operando1}</span><span class="operatore">${c.operatore}</span><span>${c.operando2}</span><span>=</span>
+            <input type="text" inputmode="numeric" pattern="[0-9]*" class="risposta-input" id="risposta-input" placeholder="?" autocomplete="off">
+          </div>
+        `
+      }
+
+      const feedback = document.createElement('p')
+      feedback.id = 'esercizio-feedback'
+      feedback.className = 'esercizio-feedback'
+
+      const azioni = document.createElement('div')
+      azioni.className = 'esercizio-azioni'
+      azioni.innerHTML = `<button type="button" id="btn-correggi" class="btn-primario">Correggi</button>`
+
+      container.append(wrap, feedback, azioni)
+
+      const input = $('#risposta-input')
+      input.focus()
+      $('#btn-correggi').addEventListener('click', () => correggiMatematica(es))
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') correggiMatematica(es)
+      })
+    }
+
+    async function correggiMatematica(es) {
+      const input = $('#risposta-input')
+      const valore = input.value.trim()
+      if (valore === '') { input.focus(); return }
+
+      const risposta = Number(valore)
+      const corretto = risposta === es.soluzione.risposta
+
+      await salvaProgresso(es.id, { risposta }, corretto)
+
+      const feedback = $('#esercizio-feedback')
+      if (corretto) {
+        feedback.textContent = 'Giusto! 🎉'
+        feedback.className = 'esercizio-feedback feedback-ok'
+      } else {
+        feedback.textContent = `Quasi. La risposta giusta era ${es.soluzione.risposta}.`
+        feedback.className = 'esercizio-feedback feedback-no'
+      }
+
+      input.disabled = true
+      const vecchioBtn = $('#btn-correggi')
+      const nuovoBtn = document.createElement('button')
+      nuovoBtn.type = 'button'
+      nuovoBtn.id = 'btn-prossimo'
+      nuovoBtn.className = 'btn-primario'
+      nuovoBtn.textContent = 'Prossimo esercizio →'
+      nuovoBtn.addEventListener('click', () => {
+        state.sessione.ultimoEsercizioId = es.id
+        avviaEsercizio(state.sessione.argomentoId)
+      })
+      vecchioBtn.replaceWith(nuovoBtn)
+    }
+
+    // ---------- Esercizio: lettura sillabe ----------
+
+    function renderEsercizioLettura(es, container) {
+      const wrap = document.createElement('div')
+      wrap.className = 'lettura-card'
+      wrap.innerHTML = `
+        <p class="lettura-istruzione">Fai leggere a Davide questa sillaba ad alta voce, poi tocca cosa è successo</p>
+        <div class="lettura-sillaba">${es.contenuto.sillaba}</div>
+      `
+
+      const azioni = document.createElement('div')
+      azioni.className = 'esercizio-azioni-doppie'
+      azioni.innerHTML = `
+        <button type="button" id="btn-sbagliato" class="btn-esito btn-esito-no">✗ Da ripetere</button>
+        <button type="button" id="btn-giusto" class="btn-esito btn-esito-si">✓ Giusto</button>
+      `
+
+      container.append(wrap, azioni)
+
+      $('#btn-giusto').addEventListener('click', () => segnaLettura(es, true))
+      $('#btn-sbagliato').addEventListener('click', () => segnaLettura(es, false))
+    }
+
+    async function segnaLettura(es, corretto) {
+      await salvaProgresso(es.id, { sillaba: es.contenuto.sillaba }, corretto)
+      state.sessione.ultimoEsercizioId = es.id
+      avviaEsercizio(state.sessione.argomentoId)
+    }
+
+    // ---------- Salvataggio progressi ----------
+
+    async function salvaProgresso(esercizioId, rispostaData, corretto) {
+      const record = {
+        figlio_id: state.figlio?.id,
+        esercizio_id: esercizioId,
+        risposta_data: rispostaData,
+        corretto
+      }
+      const { data, error } = await supabase.from('progressi_studente').insert(record).select()
+      if (error) {
+        console.error('Gufo Saggio – errore salvataggio progresso:', error)
+        return
+      }
+      if (data && data[0]) state.progressi.push(data[0])
+    }
+
+    // ---------- Router ----------
+
+    function router() {
+      const hashArgomento = location.hash.match(/^#argomento\/(.+)$/)
+      const hashMateria = location.hash.match(/^#materia\/(.+)$/)
+      if (hashArgomento) {
+        showView('view-esercizio')
+        avviaEsercizio(hashArgomento[1])
+      } else if (hashMateria) {
+        showView('view-argomenti')
+        renderArgomenti(hashMateria[1])
+      } else {
+        showView('view-home')
+      }
+    }
+
+    $('#back-link').addEventListener('click', (e) => {
+      e.preventDefault()
+      location.hash = ''
+    })
+
+    $('#back-link-esercizio').addEventListener('click', (e) => {
+      e.preventDefault()
+      location.hash = e.currentTarget.dataset.target || ''
+    })
+
+    window.addEventListener('hashchange', router)
+
+    // ---------- Stato connessione ----------
 
     function renderError() {
       $('#greeting-name').textContent = 'Il gufo è confuso'
@@ -390,38 +822,38 @@
       el.classList.toggle('status-err', !ok)
     }
 
-    $('#back-link').addEventListener('click', (e) => {
-      e.preventDefault()
-      location.hash = ''
-    })
-
-    window.addEventListener('hashchange', router)
+    // ---------- Init ----------
 
     async function init() {
       try {
         const [
-          { data: figli, error: errFigli },
-          { data: materie, error: errMaterie },
-          { data: argomenti, error: errArgomenti },
-          { data: esercizi, error: errEsercizi }
+          { data: figli, error: e1 },
+          { data: materie, error: e2 },
+          { data: argomenti, error: e3 },
+          { data: esercizi, error: e4 },
+          { data: progressi, error: e5 }
         ] = await Promise.all([
           supabase.from('figli').select('*').order('created_at', { ascending: true }).limit(1),
           supabase.from('materie').select('*').order('ordine', { ascending: true }),
           supabase.from('argomenti').select('*'),
-          supabase.from('esercizi').select('argomento_id')
+          supabase.from('esercizi').select('*'),
+          supabase.from('progressi_studente').select('*')
         ])
 
-        if (errFigli) throw errFigli
-        if (errMaterie) throw errMaterie
-        if (errArgomenti) throw errArgomenti
-        if (errEsercizi) throw errEsercizi
+        if (e1) throw e1
+        if (e2) throw e2
+        if (e3) throw e3
+        if (e4) throw e4
+        if (e5) throw e5
 
         state.figlio = figli?.[0] || null
         state.materie = materie || []
         state.argomenti = argomenti || []
+        state.esercizi = esercizi || []
+        state.progressi = progressi || []
 
         state.eserciziCount = new Map()
-        for (const e of esercizi || []) {
+        for (const e of state.esercizi) {
           state.eserciziCount.set(e.argomento_id, (state.eserciziCount.get(e.argomento_id) || 0) + 1)
         }
 
