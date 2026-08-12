@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gufo Saggio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --parchment: #F7F1E1;
+    --parchment-alt: #EFE4C8;
+    --ink: #2C2416;
+    --ink-soft: #6B5E48;
+    --forest: #2F4B3C;
+    --forest-light: #4C7160;
+    --gold: #C9950F;
+    --dusk: #5B6C9E;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100svh;
+    background: var(--parchment);
+    background-image:
+      radial-gradient(circle at 15% 8%, var(--parchment-alt) 0%, transparent 45%),
+      radial-gradient(circle at 90% 90%, var(--parchment-alt) 0%, transparent 40%);
+    color: var(--ink);
+    font-family: 'Nunito', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 20px 48px;
+  }
+
+  main {
+    width: 100%;
+    max-width: 560px;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 36px;
+  }
+
+  header .owl { flex-shrink: 0; }
+
+  .wordmark {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 28px;
+    color: var(--forest);
+    line-height: 1.1;
+  }
+
+  .tagline {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-top: 2px;
+  }
+
+  .greeting-card {
+    background: #fff;
+    border: 1px solid var(--parchment-alt);
+    border-radius: 20px;
+    padding: 28px 26px;
+    box-shadow: 0 4px 0 var(--parchment-alt);
+    margin-bottom: 40px;
+  }
+
+  #greeting-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 32px;
+    color: var(--forest);
+    margin: 0 0 6px;
+  }
+
+  #greeting-meta {
+    font-size: 16px;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  .section-label {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 20px;
+    color: var(--forest);
+    margin: 0 0 16px;
+  }
+
+  #materie-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+  }
+
+  .materia-card {
+    background: #fff;
+    border: 1px solid var(--parchment-alt);
+    border-radius: 18px;
+    padding: 22px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    font-family: inherit;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+  }
+
+  .materia-card:hover,
+  .materia-card:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(47, 75, 60, 0.12);
+  }
+
+  .materia-card:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 2px;
+  }
+
+  .materia-icona {
+    font-size: 34px;
+    line-height: 1;
+  }
+
+  .materia-nome {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 19px;
+    color: var(--ink);
+  }
+
+  .materia-tag {
+    font-size: 13px;
+    color: var(--dusk);
+    font-weight: 700;
+  }
+
+  .empty {
+    color: var(--ink-soft);
+    font-size: 15px;
+  }
+
+  #view-argomenti[hidden],
+  #view-home[hidden] {
+    display: none;
+  }
+
+  .back-link {
+    display: inline-block;
+    color: var(--forest);
+    font-weight: 700;
+    text-decoration: none;
+    margin-bottom: 24px;
+    font-size: 15px;
+    cursor: pointer;
+  }
+
+  .back-link:hover { text-decoration: underline; }
+
+  .back-link:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 2px;
+  }
+
+  .argomenti-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .argomenti-header-icona { font-size: 32px; }
+
+  .argomenti-header-nome {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 26px;
+    color: var(--forest);
+    margin: 0;
+  }
+
+  .argomento-card {
+    background: #fff;
+    border: 1px solid var(--parchment-alt);
+    border-radius: 16px;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 12px;
+  }
+
+  .argomento-nome {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--ink);
+  }
+
+  .argomento-meta {
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+
+  #status {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--ink-soft);
+    letter-spacing: 0.02em;
+  }
+
+  .status-ok { color: var(--forest-light); }
+  .status-err { color: #A8432D; }
+
+  @media (max-width: 420px) {
+    #greeting-name { font-size: 26px; }
+    .wordmark { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+  <main>
+    <header>
+      <svg class="owl" width="56" height="56" viewBox="0 0 120 120" role="img" aria-label="Gufo Saggio">
+        <path d="M28 30 L40 6 L50 32 Z" fill="#2F4B3C"/>
+        <path d="M92 30 L80 6 L70 32 Z" fill="#2F4B3C"/>
+        <ellipse cx="60" cy="66" rx="46" ry="50" fill="#2F4B3C"/>
+        <ellipse cx="60" cy="96" rx="19" ry="15" fill="#4C7160" opacity="0.55"/>
+        <circle cx="42" cy="58" r="18" fill="#F7F1E1"/>
+        <circle cx="78" cy="58" r="18" fill="#F7F1E1"/>
+        <circle cx="42" cy="58" r="8" fill="#C9950F"/>
+        <circle cx="78" cy="58" r="8" fill="#C9950F"/>
+        <circle cx="42" cy="58" r="3" fill="#2C2416"/>
+        <circle cx="78" cy="58" r="3" fill="#2C2416"/>
+        <path d="M60 68 L54 78 L66 78 Z" fill="#C9950F"/>
+      </svg>
+      <div>
+        <div class="wordmark">Gufo Saggio</div>
+        <div class="tagline">Il tuo compagno di studio</div>
+      </div>
+    </header>
+
+    <section id="view-home">
+      <section class="greeting-card">
+        <p id="greeting-name">Sveglio il gufo…</p>
+        <p id="greeting-meta">Un attimo, mi sto collegando.</p>
+      </section>
+
+      <section>
+        <h2 class="section-label">Le tue materie</h2>
+        <div id="materie-grid"></div>
+      </section>
+    </section>
+
+    <section id="view-argomenti" hidden>
+      <a href="#" id="back-link" class="back-link">← Torna alle materie</a>
+      <div class="argomenti-header">
+        <span id="argomenti-header-icona" class="argomenti-header-icona"></span>
+        <h2 id="argomenti-header-nome" class="argomenti-header-nome"></h2>
+      </div>
+      <h3 class="section-label">Argomenti</h3>
+      <div id="argomenti-list"></div>
+    </section>
+
+    <p id="status"></p>
+  </main>
+
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+
+    const supabase = createClient(
+      'https://esxpbkablktffswrhhhk.supabase.co',
+      'sb_publishable_7osbXOLGJTs7P7F3Un95zg_JBXOpVbD'
+    )
+
+    const $ = (sel) => document.querySelector(sel)
+
+    const NOMI_CLASSE = [
+      '', '1ª elementare', '2ª elementare', '3ª elementare', '4ª elementare',
+      '5ª elementare', '1ª media', '2ª media', '3ª media'
+    ]
+
+    function nomeClasse(n) {
+      return NOMI_CLASSE[n] || `Classe ${n}`
+    }
+
+    const state = {
+      figlio: null,
+      materie: [],
+      argomenti: [],
+      eserciziCount: new Map()
+    }
+
+    function renderGreeting() {
+      const figlio = state.figlio
+      if (!figlio) {
+        $('#greeting-name').textContent = 'Ciao!'
+        $('#greeting-meta').textContent = 'Nessun profilo trovato ancora nel database.'
+        return
+      }
+      $('#greeting-name').textContent = `Ciao, ${figlio.nome}!`
+      $('#greeting-meta').textContent = `${nomeClasse(figlio.classe)} · ${figlio.anno_scolastico}`
+    }
+
+    function renderMaterie() {
+      const grid = $('#materie-grid')
+      grid.innerHTML = ''
+      if (!state.materie.length) {
+        grid.innerHTML = '<p class="empty">Nessuna materia impostata ancora.</p>'
+        return
+      }
+      for (const m of state.materie) {
+        const card = document.createElement('button')
+        card.type = 'button'
+        card.className = 'materia-card'
+        card.innerHTML = `
+          <span class="materia-icona">${m.icona || '📚'}</span>
+          <span class="materia-nome">${m.nome}</span>
+          <span class="materia-tag">Vedi argomenti →</span>
+        `
+        card.addEventListener('click', () => { location.hash = `#materia/${m.id}` })
+        grid.appendChild(card)
+      }
+    }
+
+    function renderArgomenti(materiaId) {
+      const materia = state.materie.find(m => m.id === materiaId)
+      if (!materia) { location.hash = ''; return }
+
+      $('#argomenti-header-icona').textContent = materia.icona || '📚'
+      $('#argomenti-header-nome').textContent = materia.nome
+
+      const list = $('#argomenti-list')
+      list.innerHTML = ''
+
+      const argomentiMateria = state.argomenti
+        .filter(a => a.materia_id === materiaId)
+        .filter(a => !state.figlio || a.classe_riferimento === state.figlio.classe)
+
+      if (!argomentiMateria.length) {
+        list.innerHTML = '<p class="empty">Nessun argomento ancora per questa materia.</p>'
+        return
+      }
+
+      for (const a of argomentiMateria) {
+        const count = state.eserciziCount.get(a.id) || 0
+        const item = document.createElement('div')
+        item.className = 'argomento-card'
+        item.innerHTML = `
+          <span class="argomento-nome">${a.nome}</span>
+          <span class="argomento-meta">${count} ${count === 1 ? 'esercizio' : 'esercizi'} · presto si potrà iniziare</span>
+        `
+        list.appendChild(item)
+      }
+    }
+
+    function router() {
+      const match = location.hash.match(/^#materia\/(.+)$/)
+      if (match) {
+        $('#view-home').hidden = true
+        $('#view-argomenti').hidden = false
+        renderArgomenti(match[1])
+      } else {
+        $('#view-home').hidden = false
+        $('#view-argomenti').hidden = true
+      }
+    }
+
+    function renderError() {
+      $('#greeting-name').textContent = 'Il gufo è confuso'
+      $('#greeting-meta').textContent = 'Non riesco a collegarmi al database. Controlla la connessione e riprova.'
+    }
+
+    function setStatus(ok) {
+      const el = $('#status')
+      el.textContent = ok ? 'Connesso a Supabase ✓' : 'Connessione non riuscita'
+      el.classList.toggle('status-ok', ok)
+      el.classList.toggle('status-err', !ok)
+    }
+
+    $('#back-link').addEventListener('click', (e) => {
+      e.preventDefault()
+      location.hash = ''
+    })
+
+    window.addEventListener('hashchange', router)
+
+    async function init() {
+      try {
+        const [
+          { data: figli, error: errFigli },
+          { data: materie, error: errMaterie },
+          { data: argomenti, error: errArgomenti },
+          { data: esercizi, error: errEsercizi }
+        ] = await Promise.all([
+          supabase.from('figli').select('*').order('created_at', { ascending: true }).limit(1),
+          supabase.from('materie').select('*').order('ordine', { ascending: true }),
+          supabase.from('argomenti').select('*'),
+          supabase.from('esercizi').select('argomento_id')
+        ])
+
+        if (errFigli) throw errFigli
+        if (errMaterie) throw errMaterie
+        if (errArgomenti) throw errArgomenti
+        if (errEsercizi) throw errEsercizi
+
+        state.figlio = figli?.[0] || null
+        state.materie = materie || []
+        state.argomenti = argomenti || []
+
+        state.eserciziCount = new Map()
+        for (const e of esercizi || []) {
+          state.eserciziCount.set(e.argomento_id, (state.eserciziCount.get(e.argomento_id) || 0) + 1)
+        }
+
+        renderGreeting()
+        renderMaterie()
+        router()
+        setStatus(true)
+      } catch (err) {
+        console.error('Gufo Saggio – errore di connessione:', err)
+        renderError()
+        setStatus(false)
+      }
+    }
+
+    init()
+  </script>
+</body>
+</html>
