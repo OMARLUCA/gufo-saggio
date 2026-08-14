@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gufo Saggio</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -318,6 +321,58 @@
     border-color: var(--gold);
   }
 
+  .aiuto-toggle {
+    background: none;
+    border: none;
+    color: var(--dusk);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 6px 4px;
+    margin-bottom: 8px;
+  }
+
+  .aiuto-toggle:hover { text-decoration: underline; }
+
+  .aiuto-toggle:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 2px;
+  }
+
+  .aiuto-box {
+    background: var(--parchment-alt);
+    border-radius: 14px;
+    padding: 14px 18px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+
+  .aiuto-testo {
+    margin: 0 0 10px;
+  }
+
+  .aiuto-ascolta {
+    background: var(--dusk);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 7px 14px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  .aiuto-ascolta:hover { opacity: 0.9; }
+
+  .aiuto-ascolta:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 2px;
+  }
+
   .esercizio-feedback {
     font-size: 18px;
     font-weight: 700;
@@ -516,7 +571,7 @@
       esercizi: [],
       progressi: [],
       eserciziCount: new Map(),
-      sessione: { argomentoId: null, esercizioCorrente: null, ultimoEsercizioId: null }
+      sessione: { argomentoId: null, esercizioCorrente: null, ultimoEsercizioId: null, streak: 0 }
     }
 
     // ---------- Home ----------
@@ -660,8 +715,53 @@
 
     // ---------- Esercizio: matematica ----------
 
+    const AIUTO_TIPS = {
+      'Addizioni in riga': 'Parti dal numero più grande e conta in avanti con le dita, oppure scomponi il secondo numero in decine e unità.',
+      'Addizioni in colonna': 'Incolonna le unità sotto le unità. Se sommandole superi 9, scrivi l\'unità e ricordati di aggiungere 1 alla colonna delle decine.',
+      'Sottrazioni in riga': 'Conta all\'indietro dal numero più grande, oppure pensa: "quanto manca per arrivare da un numero all\'altro?"',
+      'Sottrazioni in colonna': 'Se il numero sopra è più piccolo di quello sotto, "prendi in prestito" una decina dalla colonna a sinistra.'
+    }
+
     function renderEsercizioMatematica(es, container) {
       const c = es.contenuto
+      const argomento = state.argomenti.find(a => a.id === es.argomento_id)
+      const tip = argomento ? AIUTO_TIPS[argomento.nome] : null
+
+      if (tip) {
+        const toggle = document.createElement('button')
+        toggle.type = 'button'
+        toggle.className = 'aiuto-toggle'
+        toggle.textContent = '💡 Un aiuto?'
+
+        const box = document.createElement('div')
+        box.className = 'aiuto-box'
+        box.hidden = true
+
+        const testoTip = document.createElement('p')
+        testoTip.className = 'aiuto-testo'
+        testoTip.textContent = tip
+
+        const ascoltaBtn = document.createElement('button')
+        ascoltaBtn.type = 'button'
+        ascoltaBtn.className = 'aiuto-ascolta'
+        ascoltaBtn.textContent = '🔊 Ascolta'
+        ascoltaBtn.addEventListener('click', () => parla(tip))
+
+        box.append(testoTip, ascoltaBtn)
+
+        toggle.addEventListener('click', () => {
+          box.hidden = !box.hidden
+          toggle.textContent = box.hidden ? '💡 Un aiuto?' : '💡 Nascondi aiuto'
+          if (box.hidden) {
+            window.speechSynthesis?.cancel()
+          } else {
+            parla(tip)
+          }
+        })
+
+        container.append(toggle, box)
+      }
+
       const wrap = document.createElement('div')
       wrap.className = 'math-card'
 
@@ -708,6 +808,13 @@
 
       const risposta = Number(valore)
       const corretto = risposta === es.soluzione.risposta
+
+      if (corretto) {
+        festeggia()
+        considerIncoraggiamento(es)
+      } else {
+        state.sessione.streak = 0
+      }
 
       await salvaProgresso(es.id, { risposta }, corretto)
 
@@ -758,9 +865,223 @@
     }
 
     async function segnaLettura(es, corretto) {
+      if (corretto) {
+        festeggia()
+        considerIncoraggiamento(es)
+      } else {
+        state.sessione.streak = 0
+      }
       await salvaProgresso(es.id, { sillaba: es.contenuto.sillaba }, corretto)
       state.sessione.ultimoEsercizioId = es.id
       avviaEsercizio(state.sessione.argomentoId)
+    }
+
+    // ---------- Insegnante virtuale: incoraggiamenti contestuali ----------
+
+    const FRASI_STREAK = [
+      'Tre giuste di fila, stai andando alla grande!',
+      'Che serie! Continua così.',
+      'Sei in un bel momento, vero?'
+    ]
+
+    const FRASI_STREAK_LUNGA = [
+      'Non ne sbagli una, sei davvero bravo oggi!',
+      'Wow, complimenti, stai andando fortissimo.',
+      'Sei inarrestabile oggi!'
+    ]
+
+    const FRASI_MIGLIORAMENTO = [
+      'Su questo argomento di solito fai più fatica, e oggi ti sta venendo benissimo!',
+      'Stai migliorando proprio su un argomento che ti mette alla prova.',
+      'Questo tipo di esercizio ti dava più filo da torcere, e guarda come lo risolvi ora!'
+    ]
+
+    const FRASI_DIFFICILE = [
+      'Bravo, questo esercizio non era per niente facile.',
+      'Ottimo lavoro, era un esercizio impegnativo.',
+      'Molto bene, hai superato una sfida vera.'
+    ]
+
+    const FRASI_GENERICHE = [
+      'Bravissimo!',
+      'Perfetto, vai avanti così.',
+      'Ottimo lavoro!',
+      'Sei sulla strada giusta.'
+    ]
+
+    function eDifficile(es) {
+      if (es.tipo === 'risposta_libera') return es.contenuto.formato === 'colonna'
+      if (es.tipo === 'lettura_supervisionata') return es.contenuto.livello !== 'semplice'
+      return false
+    }
+
+    function tassoErroreStoricoArgomento(argomentoId) {
+      const idEserciziArgomento = new Set(
+        state.esercizi.filter(e => e.argomento_id === argomentoId).map(e => e.id)
+      )
+      const tentativi = state.progressi.filter(p => idEserciziArgomento.has(p.esercizio_id))
+      if (tentativi.length < 3) return null
+      const errori = tentativi.filter(t => !t.corretto).length
+      return errori / tentativi.length
+    }
+
+    function considerIncoraggiamento(es) {
+      // Calcolato PRIMA che il tentativo corrente venga salvato in state.progressi,
+      // così riflette lo storico reale e non il tentativo appena fatto.
+      const tassoStorico = tassoErroreStoricoArgomento(es.argomento_id)
+      const difficile = eDifficile(es)
+
+      state.sessione.streak = (state.sessione.streak || 0) + 1
+      const streak = state.sessione.streak
+
+      let probabilita = 0.15
+      let categoria = 'generica'
+
+      if (streak >= 5 && streak % 5 === 0) {
+        probabilita = 0.9
+        categoria = 'streak_lunga'
+      } else if (streak >= 3) {
+        probabilita = 0.55
+        categoria = 'streak'
+      }
+
+      if (tassoStorico !== null && tassoStorico >= 0.4) {
+        probabilita = Math.max(probabilita, 0.6)
+        categoria = 'miglioramento'
+      } else if (difficile && categoria === 'generica') {
+        probabilita = Math.max(probabilita, 0.35)
+        categoria = 'difficile'
+      }
+
+      if (Math.random() > probabilita) return
+
+      const frasiPerCategoria = {
+        streak_lunga: FRASI_STREAK_LUNGA,
+        streak: FRASI_STREAK,
+        miglioramento: FRASI_MIGLIORAMENTO,
+        difficile: FRASI_DIFFICILE,
+        generica: FRASI_GENERICHE
+      }
+      const frasi = frasiPerCategoria[categoria]
+      const frase = frasi[Math.floor(Math.random() * frasi.length)]
+
+      // Ritardo per non accavallarsi alla musichetta dei coriandoli
+      setTimeout(() => parla(frase), 1600)
+    }
+
+    // ---------- Voce per i consigli ----------
+
+    function parla(testo) {
+      try {
+        if (!('speechSynthesis' in window)) return
+        window.speechSynthesis.cancel()
+        const utterance = new SpeechSynthesisUtterance(testo)
+        utterance.lang = 'it-IT'
+        utterance.rate = 0.85
+        utterance.pitch = 0.95
+        utterance.volume = 1
+        window.speechSynthesis.speak(utterance)
+      } catch (err) {
+        console.warn('Gufo Saggio – sintesi vocale non disponibile:', err)
+      }
+    }
+
+    // ---------- Festa per le risposte corrette ----------
+
+    let audioCtx = null
+
+    function getAudioCtx() {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext
+      if (!AudioCtx) return null
+      if (!audioCtx) audioCtx = new AudioCtx()
+      if (audioCtx.state === 'suspended') audioCtx.resume()
+      return audioCtx
+    }
+
+    function playFanfare() {
+      try {
+        const ctx = getAudioCtx()
+        if (!ctx) return
+        const note = (freq, start, dur) => {
+          const osc = ctx.createOscillator()
+          const gain = ctx.createGain()
+          osc.type = 'triangle'
+          osc.frequency.value = freq
+          const t0 = ctx.currentTime + start
+          gain.gain.setValueAtTime(0, t0)
+          gain.gain.linearRampToValueAtTime(0.28, t0 + 0.02)
+          gain.gain.exponentialRampToValueAtTime(0.001, t0 + dur)
+          osc.connect(gain)
+          gain.connect(ctx.destination)
+          osc.start(t0)
+          osc.stop(t0 + dur + 0.05)
+        }
+        note(392.00, 0,    0.12) // ta
+        note(523.25, 0.12, 0.12) // ta
+        note(659.25, 0.24, 0.12) // ta
+        note(783.99, 0.36, 0.55) // daaa
+      } catch (err) {
+        console.warn('Gufo Saggio – audio non disponibile:', err)
+      }
+    }
+
+    function creaConfetti() {
+      const durata = 1500
+      const canvas = document.createElement('canvas')
+      canvas.style.position = 'fixed'
+      canvas.style.inset = '0'
+      canvas.style.zIndex = '999'
+      canvas.style.pointerEvents = 'none'
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
+      document.body.appendChild(canvas)
+      const ctx = canvas.getContext('2d')
+
+      const colori = ['#C9950F', '#2F4B3C', '#5B6C9E', '#D2555A', '#E8963C', '#4FA3C9']
+      const pezzi = Array.from({ length: 140 }, () => ({
+        x: canvas.width / 2 + (Math.random() - 0.5) * 80,
+        y: canvas.height * 0.35 + (Math.random() - 0.5) * 40,
+        vx: (Math.random() - 0.5) * 10,
+        vy: -Math.random() * 9 - 4,
+        size: 5 + Math.random() * 5,
+        colore: colori[Math.floor(Math.random() * colori.length)],
+        rot: Math.random() * Math.PI * 2,
+        vrot: (Math.random() - 0.5) * 0.3
+      }))
+
+      const inizio = performance.now()
+      const gravita = 0.28
+
+      function frame(now) {
+        const t = now - inizio
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        for (const p of pezzi) {
+          p.vy += gravita
+          p.x += p.vx
+          p.y += p.vy
+          p.rot += p.vrot
+          ctx.save()
+          ctx.translate(p.x, p.y)
+          ctx.rotate(p.rot)
+          ctx.fillStyle = p.colore
+          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6)
+          ctx.restore()
+        }
+        if (t < durata) {
+          requestAnimationFrame(frame)
+        } else {
+          canvas.remove()
+        }
+      }
+      requestAnimationFrame(frame)
+
+      return durata
+    }
+
+    function festeggia() {
+      playFanfare()
+      const durata = creaConfetti()
+      return new Promise((resolve) => setTimeout(resolve, durata))
     }
 
     // ---------- Salvataggio progressi ----------
