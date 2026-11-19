@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Nunito:wght@500;600;700;800&family=Andika:wght@400;700&family=Playwrite+IT+Moderna&display=swap" rel="stylesheet">
 <style>
   :root {
     --parchment: #F7F1E1;
@@ -157,7 +157,8 @@
 
   #view-argomenti[hidden],
   #view-home[hidden],
-  #view-esercizio[hidden] {
+  #view-esercizio[hidden],
+  #view-lab[hidden] {
     display: none;
   }
 
@@ -474,10 +475,386 @@
   .status-ok { color: var(--forest-light); }
   .status-err { color: var(--red); }
 
+  /* Laboratorio parole (lettoscrittura) */
+
+  .lab-intro {
+    color: var(--ink-soft);
+    font-size: 15px;
+    line-height: 1.5;
+    margin: -12px 0 22px;
+  }
+
+  .lab-gioco-icona { font-size: 22px; margin-right: 6px; }
+
+  .lab-genitori {
+    margin-top: 34px;
+    padding-top: 22px;
+    border-top: 2px dashed var(--parchment-alt);
+  }
+
+  .lab-chip-gruppo { margin-bottom: 16px; }
+
+  .lab-chip-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    margin: 0 0 8px;
+  }
+
+  .lab-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  .lab-chip {
+    background: #fff;
+    border: 2px solid var(--parchment-alt);
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  .lab-chip.attiva {
+    background: var(--forest);
+    border-color: var(--forest);
+    color: #fff;
+  }
+
+  .lab-chip:focus-visible,
+  .lab-opzione:focus-visible,
+  .lab-tessera:focus-visible,
+  .lab-slot:focus-visible,
+  .lab-ascolta:focus-visible,
+  .lab-mini:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 2px;
+  }
+
+  .lab-progresso {
+    text-align: right;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    margin: -14px 0 10px;
+  }
+
+  .lab-card {
+    background: #fff;
+    border: 1px solid var(--parchment-alt);
+    border-radius: 20px;
+    padding: 28px 20px;
+    text-align: center;
+    margin-bottom: 18px;
+  }
+
+  .lab-istruzione {
+    color: var(--ink-soft);
+    font-size: 15px;
+    line-height: 1.45;
+    margin: 0 0 16px;
+  }
+
+  .lab-font,
+  .lab-parola,
+  .lab-opzione,
+  .lab-tessera,
+  .lab-slot,
+  .lab-lettera,
+  .lab-lampo {
+    font-family: 'Andika', 'Nunito', sans-serif;
+  }
+
+  .lab-ascolta {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    border: none;
+    background: var(--dusk);
+    color: #fff;
+    font-size: 30px;
+    cursor: pointer;
+    margin: 0 auto 14px;
+    display: block;
+    box-shadow: 0 4px 0 #46557f;
+  }
+
+  .lab-ascolta:active { transform: translateY(2px); box-shadow: 0 2px 0 #46557f; }
+
+  .lab-emoji { font-size: 54px; line-height: 1.2; margin-bottom: 6px; }
+  .lab-orecchio { font-size: 40px; opacity: 0.6; }
+
+  .lab-etichetta {
+    display: inline-block;
+    background: var(--parchment-alt);
+    border-radius: 999px;
+    padding: 3px 12px;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--ink-soft);
+    margin: 0 0 8px;
+  }
+
+  .lab-parola {
+    font-size: 44px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    line-height: 1.3;
+    word-break: break-word;
+  }
+
+  .lab-buco {
+    display: inline-block;
+    min-width: 0.75em;
+    border-bottom: 5px solid var(--gold);
+    margin: 0 3px;
+  }
+
+  .lab-vocale-trovata {
+    border-bottom: 5px solid var(--forest-light);
+  }
+
+  .lab-doppia {
+    background: #FCE9B8;
+    border-radius: 6px;
+    box-shadow: inset 0 -4px 0 var(--gold);
+  }
+
+  .lab-sep {
+    color: var(--gold);
+    margin: 0 0.12em;
+  }
+
+  .lab-lettera {
+    font-size: 96px;
+    font-weight: 700;
+    color: var(--forest);
+    line-height: 1.1;
+  }
+
+  .lab-lettera small {
+    font-size: 96px;
+    color: var(--dusk);
+    margin-left: 0.25em;
+  }
+
+  .lab-opzioni {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 22px;
+  }
+
+  .lab-opzione {
+    min-width: 84px;
+    background: var(--parchment);
+    border: 3px solid var(--parchment-alt);
+    border-radius: 16px;
+    padding: 10px 18px;
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--ink);
+    cursor: pointer;
+    letter-spacing: 0.06em;
+    transition: transform 0.1s ease;
+  }
+
+  .lab-opzione:active { transform: scale(0.96); }
+  .lab-opzione-parola { font-size: 32px; flex: 1 1 40%; }
+  .lab-opzione.giusta { background: #E3F0E7; border-color: var(--forest-light); }
+  .lab-opzione.sbagliata { background: #F7E1DC; border-color: var(--red); opacity: 0.75; }
+  .lab-opzione:disabled { cursor: default; color: var(--ink); }
+
+  .lab-slots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin: 18px 0 8px;
+  }
+
+  .lab-slot {
+    min-width: 76px;
+    min-height: 62px;
+    border: 3px dashed var(--gold);
+    border-radius: 14px;
+    background: var(--parchment);
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--ink);
+    padding: 6px 10px;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+  }
+
+  .lab-slot.pieno { border-style: solid; background: #fff; }
+  .lab-slot.giusta { border-color: var(--forest-light); background: #E3F0E7; }
+  .lab-slot.sbagliata { border-color: var(--red); background: #F7E1DC; }
+
+  .lab-tessere {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 18px;
+  }
+
+  .lab-tessera {
+    min-width: 70px;
+    background: #fff;
+    border: 2px solid var(--forest);
+    border-radius: 14px;
+    padding: 10px 14px;
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--ink);
+    cursor: pointer;
+    box-shadow: 0 4px 0 var(--forest);
+    letter-spacing: 0.05em;
+  }
+
+  .lab-tessera:disabled { visibility: hidden; }
+
+  .lab-soluzione { margin-top: 14px; }
+
+  .lab-lampo {
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 64px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--forest);
+  }
+
+  .lab-lampo-vuoto { color: var(--parchment-alt); }
+
+  .lab-righe { text-align: left; margin-top: 8px; }
+
+  .lab-riga {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--parchment-alt);
+  }
+
+  .lab-riga:last-child { border-bottom: none; }
+
+  .lab-riga-et {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink-soft);
+  }
+
+  .lab-riga .lab-parola { font-size: 34px; white-space: nowrap; }
+
+  .lab-corsivo {
+    font-family: 'Playwrite IT Moderna', cursive;
+    font-size: 30px;
+    color: var(--ink);
+    line-height: 1.8;
+  }
+
+  .lab-fine {
+    text-align: center;
+    padding: 36px 20px;
+  }
+
+  .lab-fine-numero {
+    font-family: 'Fraunces', serif;
+    font-size: 56px;
+    font-weight: 700;
+    color: var(--forest);
+    margin: 0;
+  }
+
+  .lab-fine .esercizio-azioni { gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+
+  .btn-secondario {
+    background: var(--parchment-alt);
+    color: var(--ink);
+    border: none;
+    border-radius: 14px;
+    padding: 14px 24px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .lab-reg-gruppo {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--forest);
+    margin: 26px 0 10px;
+  }
+
+  .lab-reg-riga {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    border: 1px solid var(--parchment-alt);
+    border-radius: 14px;
+    padding: 8px 10px 8px 16px;
+    margin-bottom: 8px;
+  }
+
+  .lab-reg-parola {
+    flex: 1;
+    font-family: 'Andika', 'Nunito', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  .lab-reg-stato {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    display: block;
+    font-family: 'Nunito', sans-serif;
+  }
+
+  .lab-reg-stato.ok { color: var(--forest-light); }
+
+  .lab-mini {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    border: none;
+    background: var(--parchment-alt);
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  .lab-mini.rec { background: var(--red); color: #fff; animation: lab-pulsa 1s infinite; }
+
+  @keyframes lab-pulsa { 50% { opacity: 0.6; } }
+
+  .lab-avviso {
+    background: #F7E1DC;
+    color: var(--red);
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
   @media (max-width: 420px) {
     #greeting-name { font-size: 26px; }
     .wordmark { font-size: 24px; }
     .lettura-sillaba { font-size: 52px; }
+    .lab-parola { font-size: 36px; }
+    .lab-opzione-parola { font-size: 26px; }
+    .lab-lampo { font-size: 52px; }
+    .lab-riga .lab-parola { font-size: 28px; }
+    .lab-corsivo { font-size: 26px; }
   }
 </style>
 </head>
@@ -534,6 +911,11 @@
       <div id="esercizio-body"></div>
     </section>
 
+    <section id="view-lab" hidden>
+      <a href="#" id="back-link-lab" class="back-link">← Torna alle materie</a>
+      <div id="lab-body"></div>
+    </section>
+
     <p id="status"></p>
   </main>
 
@@ -556,7 +938,7 @@
       return NOMI_CLASSE[n] || `Classe ${n}`
     }
 
-    const VIEW_IDS = ['view-home', 'view-argomenti', 'view-esercizio']
+    const VIEW_IDS = ['view-home', 'view-argomenti', 'view-esercizio', 'view-lab']
 
     function showView(id) {
       for (const v of VIEW_IDS) {
@@ -592,7 +974,6 @@
       grid.innerHTML = ''
       if (!state.materie.length) {
         grid.innerHTML = '<p class="empty">Nessuna materia impostata ancora.</p>'
-        return
       }
       for (const m of state.materie) {
         const card = document.createElement('button')
@@ -606,6 +987,18 @@
         card.addEventListener('click', () => { location.hash = `#materia/${m.id}` })
         grid.appendChild(card)
       }
+
+      // Il Laboratorio parole non dipende dal database: è sempre disponibile
+      const lab = document.createElement('button')
+      lab.type = 'button'
+      lab.className = 'materia-card'
+      lab.innerHTML = `
+        <span class="materia-icona">✏️</span>
+        <span class="materia-nome">Laboratorio parole</span>
+        <span class="materia-tag">Leggere e scrivere →</span>
+      `
+      lab.addEventListener('click', () => { location.hash = '#lab' })
+      grid.appendChild(lab)
     }
 
     // ---------- Argomenti ----------
@@ -1101,12 +1494,871 @@
       if (data && data[0]) state.progressi.push(data[0])
     }
 
+    // =====================================================================
+    // ---------- Laboratorio parole (lettoscrittura) ----------
+    // Giochi per: maiuscole/minuscole, vocali a-e-o, suoni simili, doppie,
+    // lettura veloce di sillabe, costruzione di parole, dettato su quaderno.
+    // Funziona senza database: preferenze e progressi restano sul dispositivo
+    // (localStorage), le registrazioni vocali in IndexedDB.
+    // =====================================================================
+
+    const TURNI_PER_ROUND = 10
+    const VOCALI = 'aeiou'
+
+    let labSessione = null
+
+    function leggiJSON(key, def) {
+      try {
+        const v = JSON.parse(localStorage.getItem(key))
+        return v ?? def
+      } catch { return def }
+    }
+
+    function scriviJSON(key, val) {
+      try { localStorage.setItem(key, JSON.stringify(val)) } catch {}
+    }
+
+    const labPrefs = Object.assign(
+      { maiuscolo: true, vocaliColorate: true, velocitaLampo: 1500, livelloLampo: 1 },
+      leggiJSON('gufo-lab-prefs', {})
+    )
+    const salvaPrefs = () => scriviJSON('gufo-lab-prefs', labPrefs)
+
+    const labStats = leggiJSON('gufo-lab-stats', {})
+
+    function registraEsito(gioco, chiave, corretto) {
+      const s = labStats[gioco] || (labStats[gioco] = { ok: 0, tot: 0, errori: {} })
+      s.tot++
+      if (corretto) {
+        s.ok++
+        if (s.errori[chiave]) s.errori[chiave] = Math.max(0, s.errori[chiave] - 0.5)
+      } else {
+        s.errori[chiave] = (s.errori[chiave] || 0) + 1
+      }
+      scriviJSON('gufo-lab-stats', labStats)
+    }
+
+    const caso = (arr) => arr[Math.floor(Math.random() * arr.length)]
+
+    function mescola(arr) {
+      const a = [...arr]
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]]
+      }
+      return a
+    }
+
+    // Le parole sbagliate tornano più spesso, senza ripetere subito l'ultima
+    function pescaPesata(gioco, items, chiave) {
+      const errori = labStats[gioco]?.errori || {}
+      const ultimo = labSessione?.ultimo
+      const pool = items.length > 1 ? items.filter(it => chiave(it) !== ultimo) : items
+      const pesi = pool.map(it => 1 + (errori[chiave(it)] || 0) * 2)
+      let r = Math.random() * pesi.reduce((a, b) => a + b, 0)
+      for (let i = 0; i < pool.length; i++) {
+        r -= pesi[i]
+        if (r <= 0) return pool[i]
+      }
+      return pool[pool.length - 1]
+    }
+
+    function el(tag, className, html) {
+      const e = document.createElement(tag)
+      if (className) e.className = className
+      if (html !== undefined) e.innerHTML = html
+      if (tag === 'button') e.type = 'button'
+      return e
+    }
+
+    // ---------- Dati ----------
+
+    // [lettera grande, lettera piccola, scelte che si confondono facilmente]
+    const LAB_PONTE = [
+      ['A', 'a', ['a', 'e', 'o']], ['E', 'e', ['e', 'a', 'o', 'c']], ['O', 'o', ['o', 'a', 'e']],
+      ['B', 'b', ['b', 'd', 'p', 'q']], ['D', 'd', ['d', 'b', 'p', 'q']], ['P', 'p', ['p', 'q', 'b', 'd']],
+      ['Q', 'q', ['q', 'p', 'g', 'd']], ['M', 'm', ['m', 'n', 'u']], ['N', 'n', ['n', 'm', 'u']],
+      ['U', 'u', ['u', 'n', 'v']], ['F', 'f', ['f', 't', 'l']], ['T', 't', ['t', 'f', 'l']],
+      ['G', 'g', ['g', 'q', 'p']], ['L', 'l', ['l', 'i', 't']], ['R', 'r', ['r', 'n', 'v']],
+      ['C', 'c', ['c', 'e', 'o']], ['S', 's', ['s', 'z', 'c']], ['I', 'i', ['i', 'l', 'j']]
+    ]
+
+    // La vocale da trovare è tra parentesi quadre
+    const LAB_VOCALI = [
+      ['c[a]ne', '🐶'], ['m[a]re', '🌊'], ['s[o]le', '☀️'], ['m[e]la', '🍎'], ['r[o]sa', '🌹'],
+      ['p[e]ra', '🍐'], ['t[o]po', '🐭'], ['g[a]tto', '🐱'], ['l[e]tto', '🛏️'], ['f[o]ca', '🦭'],
+      ['p[a]ne', '🍞'], ['n[a]so', '👃'], ['b[o]cca', '👄'], ['p[e]sce', '🐟'], ['m[o]to', '🏍️'],
+      ['t[o]rta', '🎂'], ['c[a]sa', '🏠'], ['v[e]la', '⛵'], ['l[a]go', '🏞️'], ['n[e]ve', '❄️'],
+      ['p[o]rta', '🚪'], ['b[a]rca', '🚣'], ['d[e]nte', '🦷'], ['ran[a]', '🐸'], ['lun[a]', '🌙'],
+      ['gatt[o]', '🐱'], ['fior[e]', '🌸'], ['cuor[e]', '❤️'], ['lup[o]', '🐺'], ['sedi[a]', '🪑'],
+      ['pall[a]', '⚽'], ['ors[o]', '🐻'], ['cavall[o]', '🐴'], ['pecor[a]', '🐑'], ['ap[e]', '🐝'],
+      ['[o]rso', '🐻'], ['[a]pe', '🐝'], ['[e]lefante', '🐘'], ['pan[e]', '🍞'], ['nev[e]', '❄️']
+    ]
+
+    // [parola, emoji, parola gemella, emoji, suoni]
+    const LAB_GEMELLI = [
+      ['palla', '⚽', 'balla', '💃', 'P / B'], ['pollo', '🐔', 'bollo', '📮', 'P / B'],
+      ['pere', '🍐', 'bere', '🥤', 'P / B'], ['pasta', '🍝', 'basta', '✋', 'P / B'],
+      ['tetto', '🏠', 'detto', '💬', 'T / D'], ['tue', '👉', 'due', '2️⃣', 'T / D'],
+      ['tono', '🎵', 'dono', '🎁', 'T / D'], ['fino', '🏁', 'vino', '🍷', 'F / V'],
+      ['foto', '📷', 'voto', '🔟', 'F / V'], ['fede', '💍', 'vede', '👀', 'F / V'],
+      ['foglia', '🍃', 'voglia', '🤤', 'F / V'], ['cola', '🥤', 'gola', '😮', 'C / G'],
+      ['cara', '❤️', 'gara', '🏁', 'C / G'], ['callo', '🦶', 'gallo', '🐓', 'C / G']
+    ]
+
+    // [parola semplice, emoji, parola con la doppia, emoji]
+    const LAB_DOPPIE = [
+      ['pala', '🪏', 'palla', '⚽'], ['nono', '9️⃣', 'nonno', '👴'], ['capello', '💇', 'cappello', '🎩'],
+      ['sete', '🥤', 'sette', '7️⃣'], ['papa', '⛪', 'pappa', '🥣'], ['note', '🎵', 'notte', '🌃'],
+      ['caro', '❤️', 'carro', '🛒'], ['pena', '😢', 'penna', '🖊️'], ['sono', '🙋', 'sonno', '😴'],
+      ['rosa', '🌹', 'rossa', '🔴'], ['casa', '🏠', 'cassa', '📦'], ['cane', '🐶', 'canne', '🎋'],
+      ['polo', '🧊', 'pollo', '🐔'], ['fata', '🧚', 'fatta', '✅'], ['copia', '📄', 'coppia', '👫'],
+      ['bela', '🐑', 'bella', '🌸'], ['camino', '🔥', 'cammino', '🚶'], ['tuta', '🥋', 'tutta', '✨']
+    ]
+
+    // Parole divise in sillabe, per "Costruisci la parola" e per il dettato
+    const LAB_PAROLE = [
+      ['ca-sa', '🏠'], ['ca-ne', '🐶'], ['me-la', '🍎'], ['so-le', '☀️'], ['ro-sa', '🌹'],
+      ['pe-ra', '🍐'], ['to-po', '🐭'], ['lu-na', '🌙'], ['ra-na', '🐸'], ['ve-la', '⛵'],
+      ['ne-ve', '❄️'], ['gat-to', '🐱'], ['let-to', '🛏️'], ['pal-la', '⚽'], ['non-no', '👴'],
+      ['pen-na', '🖊️'], ['boc-ca', '👄'], ['set-te', '7️⃣'], ['pol-lo', '🐔'], ['not-te', '🌃'],
+      ['son-no', '😴'], ['tap-po', '🍾'], ['ros-sa', '🔴'], ['bar-ca', '🚣'], ['tor-ta', '🎂'],
+      ['den-te', '🦷'], ['por-ta', '🚪'], ['pa-ta-ta', '🥔'], ['ba-na-na', '🍌'], ['ge-la-to', '🍦'],
+      ['gal-li-na', '🐔'], ['far-fal-la', '🦋'], ['cap-pel-lo', '🎩'], ['ca-ra-mel-la', '🍬'],
+      ['po-mo-do-ro', '🍅'], ['fra-go-la', '🍓'], ['mac-chi-na', '🚗'], ['scuo-la', '🏫'],
+      ['bi-ci-clet-ta', '🚲'], ['cioc-co-la-to', '🍫'], ['coc-co-dril-lo', '🐊'], ['pal-lon-ci-no', '🎈']
+    ]
+
+    const LAMPO_LIVELLI = {
+      1: (() => {
+        const out = []
+        for (const c of 'mptlnsrdbfv') for (const v of VOCALI) out.push(c + v)
+        return out
+      })(),
+      2: ['pra', 'pre', 'pro', 'tra', 'tre', 'tro', 'bra', 'bre', 'blo', 'sta', 'ste', 'sto', 'spa', 'spe',
+          'che', 'chi', 'ghe', 'ghi', 'gli', 'gna', 'gno', 'sci', 'sce', 'qua', 'que', 'cra', 'gre', 'fla',
+          'pla', 'fre', 'dro', 'gru'],
+      3: ['cane', 'mela', 'sole', 'rosa', 'pera', 'topo', 'naso', 'luna', 'casa', 'mare', 'pane', 'dito',
+          'neve', 'vela', 'gatto', 'palla', 'nonno', 'letto', 'bocca', 'penna', 'sette', 'notte', 'torta',
+          'porta', 'barca', 'dente', 'pollo', 'tetto']
+    }
+
+    const FRASI_BRAVO = ['Bravissimo!', 'Giusto! 🎉', 'Perfetto!', 'Sì, proprio così!', 'Ottimo orecchio!', 'Grande!']
+    const FRASI_RIPROVA = [
+      'Quasi! Quella giusta è in verde: riascoltala.',
+      'Niente paura, guarda quella in verde e riascolta.',
+      'Era difficile! Guarda bene quella giusta.'
+    ]
+
+    // ---------- Scrittura delle parole ----------
+
+    const COLORI_VOCALI = { a: '#D2555A', e: '#2E8B57', o: '#3F6FC4', i: '#D9822B', u: '#8A5BB5' }
+
+    // Rende una parola rispettando maiuscolo/minuscolo e vocali colorate.
+    // Con doppie: true evidenzia le consonanti doppie; il trattino diventa separatore di sillaba.
+    function scrivi(parola, opzioni = {}) {
+      const {
+        doppie = false,
+        colori = labPrefs.vocaliColorate,
+        maiuscolo = labPrefs.maiuscolo
+      } = opzioni
+      const caratteri = [...parola]
+      const lettere = caratteri.map((ch, i) => ({ ch: ch.toLowerCase(), i })).filter(x => x.ch !== '-')
+      const doppia = new Set()
+      if (doppie) {
+        for (let k = 1; k < lettere.length; k++) {
+          const a = lettere[k - 1].ch, b = lettere[k].ch
+          if (a === b && /[a-z]/.test(a) && !VOCALI.includes(a)) {
+            doppia.add(lettere[k - 1].i)
+            doppia.add(lettere[k].i)
+          }
+        }
+      }
+      let html = ''
+      caratteri.forEach((ch, i) => {
+        if (ch === '-') { html += '<span class="lab-sep">·</span>'; return }
+        const low = ch.toLowerCase()
+        const testo = maiuscolo ? ch.toUpperCase() : low
+        const stile = colori && COLORI_VOCALI[low] ? ` style="color:${COLORI_VOCALI[low]}"` : ''
+        const classe = doppia.has(i) ? ' class="lab-doppia"' : ''
+        html += (stile || classe) ? `<span${classe}${stile}>${testo}</span>` : testo
+      })
+      return html
+    }
+
+    // ---------- Voce: registrazioni dei genitori o sintesi vocale ----------
+
+    let dbVocePromise = null
+
+    function apriDbVoce() {
+      if (!dbVocePromise) {
+        dbVocePromise = new Promise((resolve, reject) => {
+          const req = indexedDB.open('gufo-voce', 1)
+          req.onupgradeneeded = () => req.result.createObjectStore('registrazioni')
+          req.onsuccess = () => resolve(req.result)
+          req.onerror = () => reject(req.error)
+        })
+      }
+      return dbVocePromise
+    }
+
+    async function dbVoce(modo, azione) {
+      try {
+        const db = await apriDbVoce()
+        return await new Promise((resolve) => {
+          const store = db.transaction('registrazioni', modo).objectStore('registrazioni')
+          const req = azione(store)
+          req.onsuccess = () => resolve(req.result ?? null)
+          req.onerror = () => resolve(null)
+        })
+      } catch (err) {
+        console.warn('Gufo Saggio – archivio voce non disponibile:', err)
+        return null
+      }
+    }
+
+    const voceGet = (parola) => dbVoce('readonly', s => s.get(parola))
+    const voceSet = (parola, blob) => dbVoce('readwrite', s => s.put(blob, parola))
+    const voceDel = (parola) => dbVoce('readwrite', s => s.delete(parola))
+    const voceChiavi = async () => (await dbVoce('readonly', s => s.getAllKeys())) || []
+
+    let audioCorrente = null
+
+    function fermaVoce() {
+      try { window.speechSynthesis?.cancel() } catch {}
+      if (audioCorrente) {
+        audioCorrente.pause()
+        audioCorrente = null
+      }
+    }
+
+    function parlaLento(testo) {
+      try {
+        if (!('speechSynthesis' in window)) return
+        const u = new SpeechSynthesisUtterance(testo)
+        u.lang = 'it-IT'
+        u.rate = 0.7
+        u.pitch = 1
+        window.speechSynthesis.speak(u)
+      } catch (err) {
+        console.warn('Gufo Saggio – sintesi vocale non disponibile:', err)
+      }
+    }
+
+    async function pronuncia(parola) {
+      fermaVoce()
+      const blob = await voceGet(parola)
+      if (blob) {
+        const url = URL.createObjectURL(blob)
+        const audio = new Audio(url)
+        audioCorrente = audio
+        audio.onended = () => URL.revokeObjectURL(url)
+        audio.play().catch(() => parlaLento(parola))
+        return
+      }
+      parlaLento(parola)
+    }
+
+    // ---------- Registrazione ----------
+
+    let streamMicrofono = null
+    let registrazioneAttiva = null
+
+    async function prendiMicrofono() {
+      if (streamMicrofono && streamMicrofono.getTracks().some(t => t.readyState === 'live')) return streamMicrofono
+      streamMicrofono = await navigator.mediaDevices.getUserMedia({ audio: true })
+      return streamMicrofono
+    }
+
+    function rilasciaMicrofono() {
+      if (streamMicrofono) {
+        streamMicrofono.getTracks().forEach(t => t.stop())
+        streamMicrofono = null
+      }
+    }
+
+    function fermaRegistrazione() {
+      const r = registrazioneAttiva
+      if (!r) return
+      clearTimeout(r.timer)
+      if (r.recorder.state !== 'inactive') r.recorder.stop()
+    }
+
+    async function avviaRegistrazione(parola, alTermine) {
+      fermaRegistrazione()
+      fermaVoce()
+      const stream = await prendiMicrofono()
+      const recorder = new MediaRecorder(stream)
+      const pezzi = []
+      recorder.ondataavailable = (e) => { if (e.data && e.data.size) pezzi.push(e.data) }
+      recorder.onstop = async () => {
+        registrazioneAttiva = null
+        const blob = new Blob(pezzi, { type: recorder.mimeType || 'audio/webm' })
+        if (blob.size) await voceSet(parola, blob)
+        alTermine?.()
+      }
+      recorder.start()
+      // Stop automatico dopo 4 secondi, nel caso ci si dimentichi
+      registrazioneAttiva = { recorder, parola, timer: setTimeout(fermaRegistrazione, 4000) }
+    }
+
+    // ---------- Catalogo giochi ----------
+
+    const LAB_GIOCHI = {
+      ponte: { nome: 'Lettere grandi e piccole', icona: '🔤', desc: 'Trova la minuscola della maiuscola', render: renderPonte },
+      vocali: { nome: 'A, E oppure O?', icona: '🅰️', desc: 'Ascolta e trova la vocale che manca', render: renderVocali },
+      gemelli: { nome: 'Suoni gemelli', icona: '👂', desc: 'P o B? T o D? F o V? C o G?', render: renderGemelli },
+      doppie: { nome: 'Caccia alla doppia', icona: '🔍', desc: 'Pala o palla? Ascolta bene', render: renderDoppie },
+      lampo: { nome: 'Sillabe lampo', icona: '⚡', desc: 'Leggi veloce quello che appare (con un grande)', render: renderLampo },
+      costruisci: { nome: 'Costruisci la parola', icona: '🧩', desc: 'Metti in fila i pezzi giusti', render: renderCostruisci },
+      dettato: { nome: 'Dettato sul quaderno', icona: '📒', desc: 'Ascolta, scrivi in corsivo e controlla', render: renderDettato }
+    }
+
+    function renderLab(sub) {
+      const back = $('#back-link-lab')
+      if (sub && sub !== 'home') {
+        back.textContent = '← Torna al laboratorio'
+        back.dataset.target = '#lab'
+      } else {
+        back.textContent = '← Torna alle materie'
+        back.dataset.target = ''
+      }
+      if (sub === 'registra') return renderRegistra()
+      if (sub && LAB_GIOCHI[sub]) return avviaGioco(sub)
+      renderLabHome()
+    }
+
+    function intestazione(icona, nome) {
+      const h = el('div', 'argomenti-header')
+      h.innerHTML = `<span class="argomenti-header-icona">${icona}</span><h2 class="argomenti-header-nome"></h2>`
+      h.querySelector('h2').textContent = nome
+      return h
+    }
+
+    function gruppoChip(etichetta, opzioni, attuale, onScelta) {
+      const g = el('div', 'lab-chip-gruppo')
+      g.append(el('p', 'lab-chip-label', etichetta))
+      const riga = el('div', 'lab-chips')
+      for (const o of opzioni) {
+        const b = el('button', 'lab-chip' + (o.v === attuale ? ' attiva' : ''), o.label)
+        b.setAttribute('aria-pressed', String(o.v === attuale))
+        b.addEventListener('click', () => onScelta(o.v))
+        riga.append(b)
+      }
+      g.append(riga)
+      return g
+    }
+
+    function renderLabHome() {
+      const body = $('#lab-body')
+      body.innerHTML = ''
+      body.append(intestazione('✏️', 'Laboratorio parole'))
+      body.append(el('p', 'lab-intro', 'Un gioco al giorno da 10 turni: bastano 5–10 minuti. Meglio poco e spesso che tanto una volta sola.'))
+
+      for (const [id, g] of Object.entries(LAB_GIOCHI)) {
+        const s = labStats[id]
+        const b = el('button', 'argomento-card')
+        b.innerHTML = `
+          <span class="argomento-nome"><span class="lab-gioco-icona">${g.icona}</span>${g.nome}</span>
+          <span class="argomento-meta">${g.desc}${s && s.tot ? ` · ${s.ok} giuste su ${s.tot}` : ''} · Gioca →</span>
+        `
+        b.addEventListener('click', () => { location.hash = `#lab/${id}` })
+        body.append(b)
+      }
+
+      const gen = el('div', 'lab-genitori')
+      gen.append(el('h3', 'section-label', 'Per mamma e papà'))
+      gen.append(gruppoChip('Lettere da usare', [
+        { v: true, label: 'MAIUSCOLO' },
+        { v: false, label: 'minuscolo' }
+      ], labPrefs.maiuscolo, (v) => { labPrefs.maiuscolo = v; salvaPrefs(); renderLabHome() }))
+      gen.append(gruppoChip('Vocali colorate', [
+        { v: true, label: '<span style="color:#D2555A">a</span> <span style="color:#2E8B57">e</span> <span style="color:#3F6FC4">o</span> Sì' },
+        { v: false, label: 'No' }
+      ], labPrefs.vocaliColorate, (v) => { labPrefs.vocaliColorate = v; salvaPrefs(); renderLabHome() }))
+
+      const reg = el('button', 'argomento-card')
+      reg.innerHTML = `
+        <span class="argomento-nome"><span class="lab-gioco-icona">🎙️</span>Registra la tua voce</span>
+        <span class="argomento-meta">La voce del telefono a volte sbaglia le doppie: registrale tu →</span>
+      `
+      reg.addEventListener('click', () => { location.hash = '#lab/registra' })
+      gen.append(reg)
+      body.append(gen)
+    }
+
+    // ---------- Motore dei turni ----------
+
+    function avviaGioco(id) {
+      labSessione = { gioco: id, fatti: 0, giusti: 0, ultimo: null, turno: 0 }
+      prossimoTurno()
+    }
+
+    function prossimoTurno() {
+      const s = labSessione
+      if (!s) return
+      fermaVoce()
+      s.turno++
+      const g = LAB_GIOCHI[s.gioco]
+      const body = $('#lab-body')
+      body.innerHTML = ''
+      body.append(intestazione(g.icona, g.nome))
+      if (s.fatti >= TURNI_PER_ROUND) return renderFineRound(body)
+      body.append(el('p', 'lab-progresso', `${s.fatti + 1} di ${TURNI_PER_ROUND}`))
+      g.render(body)
+    }
+
+    function chiudiTurno({ chiave, ok, fb, az, ripeti }) {
+      const s = labSessione
+      if (!s) return
+      const turno = s.turno
+      registraEsito(s.gioco, chiave, ok)
+      s.fatti++
+      s.ultimo = chiave
+      az.innerHTML = ''
+      if (ok) {
+        s.giusti++
+        festeggia()
+        fb.textContent = caso(FRASI_BRAVO)
+        fb.className = 'esercizio-feedback feedback-ok'
+        setTimeout(() => {
+          if (labSessione === s && s.turno === turno) prossimoTurno()
+        }, 1900)
+      } else {
+        fb.textContent = caso(FRASI_RIPROVA)
+        fb.className = 'esercizio-feedback feedback-no'
+        if (ripeti) setTimeout(() => pronuncia(ripeti), 500)
+        const avanti = el('button', 'btn-primario', 'Avanti →')
+        avanti.addEventListener('click', prossimoTurno)
+        az.append(avanti)
+      }
+    }
+
+    function renderFineRound(body) {
+      const s = labSessione
+      const box = el('div', 'lab-card lab-fine')
+      const frase = s.giusti >= 8
+        ? 'Fantastico! Il gufo è fiero di te.'
+        : s.giusti >= 5
+          ? 'Bravo! Ogni giro ti rende più forte.'
+          : 'Bravo che ti sei allenato! Le cose difficili diventano facili un giro alla volta.'
+      box.innerHTML = `
+        <p class="lab-fine-numero">${s.giusti} / ${TURNI_PER_ROUND}</p>
+        <p class="lab-istruzione"></p>
+      `
+      box.querySelector('.lab-istruzione').textContent = frase
+      const az = el('div', 'esercizio-azioni')
+      const ancora = el('button', 'btn-primario', 'Ancora un giro')
+      ancora.addEventListener('click', () => avviaGioco(s.gioco))
+      const fine = el('button', 'btn-secondario', 'Basta per oggi')
+      fine.addEventListener('click', () => { location.hash = '#lab' })
+      az.append(ancora, fine)
+      box.append(az)
+      body.append(box)
+      if (s.giusti >= 5) festeggia()
+      setTimeout(() => parla(frase), 600)
+    }
+
+    // Gioco a scelta: un pulsante giusto tra alcune opzioni
+    function renderScelta(container, cfg) {
+      const card = el('div', 'lab-card')
+      card.append(el('p', 'lab-istruzione', cfg.istruzione))
+      if (cfg.ascolta) {
+        const btnAscolta = el('button', 'lab-ascolta', '🔊')
+        btnAscolta.setAttribute('aria-label', 'Ascolta la parola')
+        btnAscolta.addEventListener('click', () => pronuncia(cfg.ascolta))
+        card.append(btnAscolta)
+      }
+      const stimolo = el('div', 'lab-stimolo', cfg.stimolo || '')
+      card.append(stimolo)
+
+      const opz = el('div', 'lab-opzioni')
+      for (const o of cfg.opzioni) {
+        const b = el('button', 'lab-opzione' + (cfg.classeOpzione ? ' ' + cfg.classeOpzione : ''), o.html)
+        b.dataset.valore = o.valore
+        opz.append(b)
+      }
+      card.append(opz)
+
+      const fb = el('p', 'esercizio-feedback')
+      const az = el('div', 'esercizio-azioni')
+      container.append(card, fb, az)
+
+      let risposto = false
+      opz.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+        if (risposto) return
+        risposto = true
+        const ok = b.dataset.valore === cfg.giusta
+        opz.querySelectorAll('button').forEach(x => {
+          x.disabled = true
+          if (x.dataset.valore === cfg.giusta) x.classList.add('giusta')
+        })
+        if (!ok) b.classList.add('sbagliata')
+        if (cfg.dopo) stimolo.innerHTML = cfg.dopo
+        chiudiTurno({ chiave: cfg.chiave, ok, fb, az, ripeti: cfg.ascolta })
+      }))
+
+      if (cfg.ascolta) setTimeout(() => pronuncia(cfg.ascolta), 350)
+    }
+
+    // ---------- Gioco 1: lettere grandi e piccole ----------
+
+    function renderPonte(c) {
+      const [grande, piccola, scelte] = pescaPesata('ponte', LAB_PONTE, it => it[0])
+      renderScelta(c, {
+        istruzione: 'Questa è una lettera GRANDE. Qual è la sua lettera piccola?',
+        stimolo: `<div class="lab-lettera">${grande}</div>`,
+        opzioni: mescola(scelte).map(v => ({ valore: v, html: v })),
+        giusta: piccola,
+        chiave: grande,
+        dopo: `<div class="lab-lettera">${grande}<small>${piccola}</small></div>`
+      })
+    }
+
+    // ---------- Gioco 2: a, e oppure o ----------
+
+    function renderVocali(c) {
+      const [marcata, emoji] = pescaPesata('vocali', LAB_VOCALI, it => it[0])
+      const idx = marcata.indexOf('[')
+      const vocale = marcata[idx + 1]
+      const parola = marcata.replace(/[\[\]]/g, '')
+      const prima = parola.slice(0, idx)
+      const resto = parola.slice(idx + 1)
+      const scelte = ['a', 'e', 'o']
+      if (!scelte.includes(vocale)) scelte.push(vocale)
+      renderScelta(c, {
+        istruzione: 'Ascolta la parola. Quale vocale manca?',
+        ascolta: parola,
+        stimolo: `<div class="lab-emoji">${emoji}</div><div class="lab-parola">${scrivi(prima)}<span class="lab-buco">&nbsp;</span>${scrivi(resto)}</div>`,
+        opzioni: scelte.map(v => ({ valore: v, html: scrivi(v) })),
+        giusta: vocale,
+        chiave: marcata,
+        dopo: `<div class="lab-emoji">${emoji}</div><div class="lab-parola">${scrivi(prima)}<span class="lab-vocale-trovata">${scrivi(vocale)}</span>${scrivi(resto)}</div>`
+      })
+    }
+
+    // ---------- Giochi 3 e 4: suoni gemelli e doppie ----------
+
+    function renderCoppia(c, gioco, lista, istruzione, conEtichetta) {
+      const coppia = pescaPesata(gioco, lista, it => it[0] + '/' + it[2])
+      const secondo = Math.random() < 0.5
+      const target = secondo ? coppia[2] : coppia[0]
+      const emoji = secondo ? coppia[3] : coppia[1]
+      const etichetta = conEtichetta ? `<p class="lab-etichetta">${coppia[4]}</p>` : ''
+      renderScelta(c, {
+        istruzione,
+        ascolta: target,
+        stimolo: `${etichetta}<div class="lab-orecchio">👂</div>`,
+        opzioni: [coppia[0], coppia[2]].map(w => ({ valore: w, html: scrivi(w, { doppie: gioco === 'doppie' }) })),
+        classeOpzione: 'lab-opzione-parola',
+        giusta: target,
+        chiave: coppia[0] + '/' + coppia[2],
+        dopo: `<div class="lab-emoji">${emoji}</div><div class="lab-parola">${scrivi(target, { doppie: true })}</div>`
+      })
+    }
+
+    function renderGemelli(c) {
+      renderCoppia(c, 'gemelli', LAB_GEMELLI, 'Ascolta bene. Quale parola hai sentito?', true)
+    }
+
+    function renderDoppie(c) {
+      renderCoppia(c, 'doppie', LAB_DOPPIE, 'Ascolta bene: la doppia si sente più lunga e più forte. Quale parola hai sentito?', false)
+    }
+
+    // ---------- Gioco 5: sillabe lampo (con un adulto) ----------
+
+    function renderLampo(c) {
+      const controlli = el('div')
+      controlli.append(gruppoChip('Cosa leggere', [
+        { v: 1, label: 'Sillabe facili' },
+        { v: 2, label: 'Sillabe difficili' },
+        { v: 3, label: 'Parole' }
+      ], labPrefs.livelloLampo, (v) => { labPrefs.livelloLampo = v; salvaPrefs(); prossimoTurno() }))
+      controlli.append(gruppoChip('Velocità', [
+        { v: 2500, label: '🐢 Lento' },
+        { v: 1500, label: '🐇 Medio' },
+        { v: 800, label: '⚡ Veloce' }
+      ], labPrefs.velocitaLampo, (v) => { labPrefs.velocitaLampo = v; salvaPrefs(); prossimoTurno() }))
+
+      const lista = LAMPO_LIVELLI[labPrefs.livelloLampo] || LAMPO_LIVELLI[1]
+      const item = pescaPesata('lampo', lista, it => it)
+
+      const card = el('div', 'lab-card')
+      card.append(el('p', 'lab-istruzione', 'Tocca VIA: appare per un attimo, leggilo ad alta voce! Il grande poi tocca com\'è andata.'))
+      const lampo = el('div', 'lab-lampo lab-lampo-vuoto', '•••')
+      card.append(lampo)
+
+      const fb = el('p', 'esercizio-feedback')
+      const az = el('div', 'esercizio-azioni-doppie')
+      const via = el('button', 'btn-primario', 'VIA!')
+      az.append(via)
+      c.append(controlli, card, fb, az)
+
+      const mostra = () => {
+        lampo.className = 'lab-lampo'
+        lampo.innerHTML = scrivi(item)
+        setTimeout(() => {
+          lampo.className = 'lab-lampo lab-lampo-vuoto'
+          lampo.textContent = '?'
+        }, labPrefs.velocitaLampo)
+      }
+
+      via.addEventListener('click', () => {
+        mostra()
+        az.innerHTML = ''
+        const rivedi = el('button', 'btn-esito btn-esito-no', '👀 Rivedi')
+        const no = el('button', 'btn-esito btn-esito-no', '✗ Da ripetere')
+        const si = el('button', 'btn-esito btn-esito-si', '✓ Giusto')
+        rivedi.addEventListener('click', mostra)
+        az.append(rivedi, no, si)
+        const esito = (ok) => {
+          lampo.className = 'lab-lampo'
+          lampo.innerHTML = scrivi(item)
+          const azFinali = el('div', 'esercizio-azioni')
+          az.replaceWith(azFinali)
+          chiudiTurno({ chiave: item, ok, fb, az: azFinali, ripeti: labPrefs.livelloLampo === 3 ? item : null })
+        }
+        si.addEventListener('click', () => esito(true))
+        no.addEventListener('click', () => esito(false))
+      })
+    }
+
+    // ---------- Gioco 6: costruisci la parola ----------
+
+    // Pezzi "trappola": la stessa sillaba con o senza doppia (gat → ga, ca → cas)
+    function distrattori(sillabe) {
+      const trappole = []
+      for (let i = 0; i < sillabe.length - 1; i++) {
+        const s = sillabe[i], n = sillabe[i + 1]
+        const ultima = s[s.length - 1]
+        if (!VOCALI.includes(ultima) && n[0] === ultima) trappole.push(s.slice(0, -1))
+        else if (VOCALI.includes(ultima) && !VOCALI.includes(n[0])) trappole.push(s + n[0])
+      }
+      const out = []
+      const valide = trappole.filter(t => !sillabe.includes(t))
+      if (valide.length) out.push(caso(valide))
+      const altre = LAB_PAROLE.flatMap(([w]) => w.split('-')).filter(x => !sillabe.includes(x) && !out.includes(x))
+      out.push(caso(altre))
+      return out
+    }
+
+    function renderCostruisci(c) {
+      const [conTrattini, emoji] = pescaPesata('costruisci', LAB_PAROLE, it => it[0])
+      const sillabe = conTrattini.split('-')
+      const parola = sillabe.join('')
+      const tessere = mescola([...sillabe, ...distrattori(sillabe)]).map((t, id) => ({ id, t }))
+      const posti = Array(sillabe.length).fill(null)
+      let finito = false
+
+      const card = el('div', 'lab-card')
+      card.append(el('p', 'lab-istruzione', 'Ascolta la parola e costruiscila con i pezzi giusti. Attento: c\'è qualche pezzo in più!'))
+      const btnAscolta = el('button', 'lab-ascolta', '🔊')
+      btnAscolta.setAttribute('aria-label', 'Ascolta la parola')
+      btnAscolta.addEventListener('click', () => pronuncia(parola))
+      card.append(btnAscolta, el('div', 'lab-emoji', emoji))
+
+      const slotBox = el('div', 'lab-slots')
+      const tesBox = el('div', 'lab-tessere')
+      const soluzione = el('div', 'lab-soluzione')
+      card.append(slotBox, tesBox, soluzione)
+
+      const fb = el('p', 'esercizio-feedback')
+      const az = el('div', 'esercizio-azioni')
+      c.append(card, fb, az)
+
+      function disegna() {
+        slotBox.innerHTML = ''
+        posti.forEach((idTessera, i) => {
+          const tessera = tessere.find(t => t.id === idTessera)
+          const s = el('button', 'lab-slot' + (tessera ? ' pieno' : ''), tessera ? scrivi(tessera.t) : '')
+          s.setAttribute('aria-label', tessera ? `Togli ${tessera.t}` : `Posto ${i + 1} vuoto`)
+          s.addEventListener('click', () => {
+            if (finito || idTessera === null) return
+            posti[i] = null
+            disegna()
+          })
+          slotBox.append(s)
+        })
+        tesBox.innerHTML = ''
+        for (const t of tessere) {
+          const b = el('button', 'lab-tessera', scrivi(t.t))
+          b.disabled = posti.includes(t.id) || finito
+          b.addEventListener('click', () => {
+            const libero = posti.indexOf(null)
+            if (libero === -1 || finito) return
+            posti[libero] = t.id
+            disegna()
+            if (!posti.includes(null)) verifica()
+          })
+          tesBox.append(b)
+        }
+      }
+
+      function verifica() {
+        finito = true
+        const composte = posti.map(id => tessere.find(t => t.id === id).t)
+        const ok = composte.join('') === parola
+        slotBox.querySelectorAll('.lab-slot').forEach((s, i) => {
+          s.classList.add(composte[i] === sillabe[i] ? 'giusta' : 'sbagliata')
+        })
+        tesBox.innerHTML = ''
+        soluzione.innerHTML = `<div class="lab-parola">${scrivi(conTrattini, { doppie: true })}</div>`
+        chiudiTurno({ chiave: conTrattini, ok, fb, az, ripeti: parola })
+      }
+
+      disegna()
+      setTimeout(() => pronuncia(parola), 350)
+    }
+
+    // ---------- Gioco 7: dettato sul quaderno ----------
+
+    function renderDettato(c) {
+      const [conTrattini, emoji] = pescaPesata('dettato', LAB_PAROLE, it => it[0])
+      const parola = conTrattini.replace(/-/g, '')
+
+      const card = el('div', 'lab-card')
+      card.append(el('p', 'lab-istruzione', 'Ascolta la parola e scrivila sul quaderno, in corsivo. Puoi riascoltarla quante volte vuoi.'))
+      const btnAscolta = el('button', 'lab-ascolta', '🔊')
+      btnAscolta.setAttribute('aria-label', 'Ascolta la parola')
+      btnAscolta.addEventListener('click', () => pronuncia(parola))
+      card.append(btnAscolta, el('div', 'lab-emoji', emoji))
+      const righe = el('div', 'lab-righe')
+      card.append(righe)
+
+      const fb = el('p', 'esercizio-feedback')
+      const az = el('div', 'esercizio-azioni')
+      const controlla = el('button', 'btn-primario', 'Ho scritto: controlla ✓')
+      az.append(controlla)
+      c.append(card, fb, az)
+
+      controlla.addEventListener('click', () => {
+        righe.innerHTML = `
+          <div class="lab-riga"><span class="lab-riga-et">Stampato grande</span><span class="lab-parola">${scrivi(parola, { doppie: true, maiuscolo: true, colori: false })}</span></div>
+          <div class="lab-riga"><span class="lab-riga-et">Stampato piccolo</span><span class="lab-parola">${scrivi(parola, { doppie: true, maiuscolo: false, colori: false })}</span></div>
+          <div class="lab-riga"><span class="lab-riga-et">Corsivo</span><span class="lab-corsivo">${parola}</span></div>
+          <div class="lab-riga"><span class="lab-riga-et">Sillabe</span><span class="lab-parola">${scrivi(conTrattini, { doppie: true })}</span></div>
+        `
+        fb.textContent = 'Confronta con il tuo quaderno, lettera per lettera.'
+        fb.className = 'esercizio-feedback'
+        const box = el('div', 'esercizio-azioni-doppie')
+        const no = el('button', 'btn-esito btn-esito-no', '✗ C\'era un errore')
+        const si = el('button', 'btn-esito btn-esito-si', '✓ Scritto giusto')
+        box.append(no, si)
+        az.replaceWith(box)
+        const esito = (ok) => {
+          const azFinali = el('div', 'esercizio-azioni')
+          box.replaceWith(azFinali)
+          chiudiTurno({ chiave: conTrattini, ok, fb, az: azFinali, ripeti: parola })
+        }
+        si.addEventListener('click', () => esito(true))
+        no.addEventListener('click', () => esito(false))
+      })
+
+      setTimeout(() => pronuncia(parola), 350)
+    }
+
+    // ---------- Registra la tua voce ----------
+
+    async function renderRegistra() {
+      const body = $('#lab-body')
+      body.innerHTML = ''
+      body.append(intestazione('🎙️', 'Registra la tua voce'))
+      body.append(el('p', 'lab-intro',
+        'Tocca 🎙️, di\' la parola chiaramente (le doppie belle lunghe: pal-la!) e tocca ⏹️. Si ferma da sola dopo 4 secondi. ' +
+        'Le parole senza registrazione le legge la voce del telefono. Le registrazioni restano solo su questo dispositivo.'))
+
+      if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
+        body.append(el('div', 'lab-avviso', 'Questo browser non permette di registrare. Prova con Chrome o Safari aggiornati.'))
+        return
+      }
+
+      const registrate = new Set(await voceChiavi())
+      const avviso = el('div')
+      body.append(avviso)
+
+      const gruppi = [
+        ['Doppie', LAB_DOPPIE.flatMap(d => [d[0], d[2]])],
+        ['Suoni gemelli', LAB_GEMELLI.flatMap(g => [g[0], g[2]])],
+        ['Parole del dettato', LAB_PAROLE.map(([w]) => w.replace(/-/g, ''))]
+      ]
+      const giaMostrate = new Set()
+
+      for (const [titolo, parole] of gruppi) {
+        const uniche = parole.filter(p => !giaMostrate.has(p))
+        uniche.forEach(p => giaMostrate.add(p))
+        if (!uniche.length) continue
+        const quante = uniche.filter(p => registrate.has(p)).length
+        const h = el('h3', 'lab-reg-gruppo')
+        h.textContent = `${titolo} · ${quante} su ${uniche.length}`
+        body.append(h)
+        for (const p of uniche) body.append(rigaRegistrazione(p, registrate, avviso))
+      }
+    }
+
+    function rigaRegistrazione(parola, registrate, avviso) {
+      const riga = el('div', 'lab-reg-riga')
+      const ha = registrate.has(parola)
+      riga.innerHTML = `
+        <span class="lab-reg-parola">${parola}<span class="lab-reg-stato${ha ? ' ok' : ''}">${ha ? '✓ la tua voce' : 'voce del telefono'}</span></span>
+      `
+      const play = el('button', 'lab-mini', '▶️')
+      play.setAttribute('aria-label', `Ascolta ${parola}`)
+      play.addEventListener('click', () => pronuncia(parola))
+
+      const rec = el('button', 'lab-mini', '🎙️')
+      rec.setAttribute('aria-label', `Registra ${parola}`)
+      rec.addEventListener('click', async () => {
+        if (registrazioneAttiva?.parola === parola) { fermaRegistrazione(); return }
+        try {
+          avviso.innerHTML = ''
+          document.querySelectorAll('.lab-mini.rec').forEach(b => { b.classList.remove('rec'); b.textContent = '🎙️' })
+          rec.classList.add('rec')
+          rec.textContent = '⏹️'
+          await avviaRegistrazione(parola, () => {
+            registrate.add(parola)
+            riga.replaceWith(rigaRegistrazione(parola, registrate, avviso))
+            pronuncia(parola)
+          })
+        } catch (err) {
+          console.warn('Gufo Saggio – microfono non disponibile:', err)
+          rec.classList.remove('rec')
+          rec.textContent = '🎙️'
+          avviso.innerHTML = '<div class="lab-avviso">Non riesco a usare il microfono. Controlla di avergli dato il permesso nelle impostazioni del browser.</div>'
+        }
+      })
+
+      riga.append(play, rec)
+
+      if (ha) {
+        const del = el('button', 'lab-mini', '🗑️')
+        del.setAttribute('aria-label', `Cancella la registrazione di ${parola}`)
+        del.addEventListener('click', async () => {
+          await voceDel(parola)
+          registrate.delete(parola)
+          riga.replaceWith(rigaRegistrazione(parola, registrate, avviso))
+        })
+        riga.append(del)
+      }
+      return riga
+    }
+
     // ---------- Router ----------
 
     function router() {
       const hashArgomento = location.hash.match(/^#argomento\/(.+)$/)
       const hashMateria = location.hash.match(/^#materia\/(.+)$/)
-      if (hashArgomento) {
+      const hashLab = location.hash.match(/^#lab(?:\/(.+))?$/)
+
+      // Uscendo da una schermata del laboratorio si ferma tutto ciò che è in corso
+      labSessione = null
+      fermaVoce()
+      fermaRegistrazione()
+      if (!hashLab || hashLab[1] !== 'registra') rilasciaMicrofono()
+
+      if (hashLab) {
+        showView('view-lab')
+        renderLab(hashLab[1])
+      } else if (hashArgomento) {
         showView('view-esercizio')
         avviaEsercizio(hashArgomento[1])
       } else if (hashMateria) {
@@ -1120,6 +2372,11 @@
     $('#back-link').addEventListener('click', (e) => {
       e.preventDefault()
       location.hash = ''
+    })
+
+    $('#back-link-lab').addEventListener('click', (e) => {
+      e.preventDefault()
+      location.hash = e.currentTarget.dataset.target || ''
     })
 
     $('#back-link-esercizio').addEventListener('click', (e) => {
@@ -1185,6 +2442,8 @@
       } catch (err) {
         console.error('Gufo Saggio – errore di connessione:', err)
         renderError()
+        renderMaterie()
+        router()
         setStatus(false)
       }
     }
