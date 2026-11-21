@@ -734,6 +734,13 @@
 
   .lab-righe { text-align: left; margin-top: 8px; }
 
+  .lab-scala { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .lab-gradino { font-size: 30px; opacity: 0.45; white-space: nowrap; }
+  .lab-gradino.attuale { font-size: 40px; opacity: 1; }
+  .lab-nuovo { background: #FCE9B8; border-radius: 6px; box-shadow: inset 0 -4px 0 var(--gold); }
+  .lab-intera { margin: 14px 0 12px; padding-top: 12px; border-top: 2px dashed var(--parchment-alt); width: 100%; }
+  .btn-esito:disabled { opacity: 0.4; cursor: default; }
+
   .lab-riga {
     display: flex;
     flex-direction: column;
@@ -855,6 +862,8 @@
     .lab-lampo { font-size: 52px; }
     .lab-riga .lab-parola { font-size: 28px; }
     .lab-corsivo { font-size: 26px; }
+    .lab-gradino { font-size: 24px; }
+    .lab-gradino.attuale { font-size: 32px; }
   }
 </style>
 </head>
@@ -1609,7 +1618,10 @@
       ['tono', '🎵', 'dono', '🎁', 'T / D'], ['fino', '🏁', 'vino', '🍷', 'F / V'],
       ['foto', '📷', 'voto', '🔟', 'F / V'], ['fede', '💍', 'vede', '👀', 'F / V'],
       ['foglia', '🍃', 'voglia', '🤤', 'F / V'], ['cola', '🥤', 'gola', '😮', 'C / G'],
-      ['cara', '❤️', 'gara', '🏁', 'C / G'], ['callo', '🦶', 'gallo', '🐓', 'C / G']
+      ['cara', '❤️', 'gara', '🏁', 'C / G'], ['callo', '🦶', 'gallo', '🐓', 'C / G'],
+      ['feste', '🎉', 'veste', '👗', 'F / V'], ['fanno', '🙌', 'vanno', '🚶', 'F / V'],
+      ['fai', '👉', 'vai', '🏃', 'F / V'], ['foglio', '📄', 'voglio', '🙋', 'F / V'],
+      ['fischio', '😗', 'vischio', '🌿', 'F / V'], ['fa', '👐', 'va', '➡️', 'F / V']
     ]
 
     // [parola semplice, emoji, parola con la doppia, emoji]
@@ -1635,6 +1647,39 @@
       ['bi-ci-clet-ta', '🚲'], ['cioc-co-la-to', '🍫'], ['coc-co-dril-lo', '🐊'], ['pal-lon-ci-no', '🎈']
     ]
 
+    // Gruppi difficili: [parola, emoji, gruppo da evidenziare, sbagli tipici]
+    const LAB_GRUPPI = [
+      ['prato', '🌱', 'pr', ['parto', 'pato']], ['prova', '✅', 'pr', ['porva', 'pova']],
+      ['treno', '🚂', 'tr', ['terno', 'teno']], ['bravo', '👏', 'br', ['barvo', 'bavo']],
+      ['fragola', '🍓', 'fr', ['fargola', 'fagola']], ['grande', '🐘', 'gr', ['garnde', 'gande']],
+      ['crema', '🍦', 'cr', ['cerma', 'cema']], ['fiore', '🌸', 'fio', ['fore', 'viore']],
+      ['qui', '👇', 'qu', ['cui', 'qi']], ['quadro', '🖼️', 'qu', ['cuadro', 'qadro']],
+      ['quattro', '4️⃣', 'qu', ['cuattro', 'qattro']], ['acqua', '💧', 'cqu', ['aqua', 'acua']],
+      ['squadra', '⚽', 'qu', ['scuadra', 'sqadra']],
+      ['chiave', '🔑', 'chi', ['ciave', 'cave']], ['chiesa', '⛪', 'chi', ['ciesa', 'cesa']],
+      ['oche', '🦢', 'che', ['oce', 'ocie']], ['chitarra', '🎸', 'chi', ['citarra', 'chiatarra']],
+      ['ghiro', '🐿️', 'ghi', ['giro', 'gro']], ['funghi', '🍄', 'ghi', ['fungi', 'funchi']],
+      ['spaghetti', '🍝', 'ghe', ['spagetti', 'spachetti']],
+      ['gnomo', '🧙', 'gn', ['nomo', 'gomo']], ['ragno', '🕷️', 'gn', ['rano', 'ragnio']],
+      ['bagno', '🛁', 'gn', ['bano', 'bagnio']],
+      ['foglia', '🍃', 'gli', ['folia', 'fogla']], ['aglio', '🧄', 'gli', ['alio', 'aglo']],
+      ['figlio', '👦', 'gli', ['filio', 'figlo']],
+      ['sci', '⛷️', 'sci', ['si', 'schi']], ['pesce', '🐟', 'sce', ['pese', 'peche']],
+      ['scimmia', '🐒', 'sci', ['simmia', 'schimmia']],
+      ['piede', '🦶', 'ie', ['pede', 'pide']], ['uovo', '🥚', 'uo', ['ovo', 'uvo']],
+      ['fuoco', '🔥', 'uo', ['foco', 'fuco']], ['cuore', '❤️', 'uo', ['core', 'cure']],
+      ['piano', '🎹', 'ia', ['pano', 'pino']]
+    ]
+
+    // Parole lunghe da leggere a scaletta, un pezzo alla volta
+    const LAB_SCALETTA = [
+      'in-quie-tan-ti', 'pro-iet-ta', 'chia-vi-stel-lo', 'qua-der-no', 'chi-tar-ra', 'pro-fu-mo',
+      'tran-quil-lo', 'spa-ghet-ti', 'ma-gni-fi-co', 'chioc-cio-la', 'ghiac-cio-lo', 'sco-iat-to-lo',
+      'pri-ma-ve-ra', 'mar-mel-la-ta', 'tem-pe-ri-no', 'quat-tro-cen-to', 'in-se-gnan-te',
+      'a-stro-nau-ta', 'prez-ze-mo-lo', 'bi-blio-te-ca', 'fra-go-la', 'pro-fes-so-res-sa',
+      'que-stio-ne', 'pa-ra-ca-du-te', 'ce-ri-mo-nia', 'qua-dri-fo-glio', 'pre-sen-ta-zio-ne'
+    ]
+
     const LAMPO_LIVELLI = {
       1: (() => {
         const out = []
@@ -1643,7 +1688,7 @@
       })(),
       2: ['pra', 'pre', 'pro', 'tra', 'tre', 'tro', 'bra', 'bre', 'blo', 'sta', 'ste', 'sto', 'spa', 'spe',
           'che', 'chi', 'ghe', 'ghi', 'gli', 'gna', 'gno', 'sci', 'sce', 'qua', 'que', 'cra', 'gre', 'fla',
-          'pla', 'fre', 'dro', 'gru'],
+          'pla', 'fre', 'dro', 'gru', 'qui', 'quo', 'pri', 'fri', 'fro', 'gri', 'tri', 'bri', 'chia', 'chie', 'quie', 'pie', 'fio', 'vio'],
       3: ['cane', 'mela', 'sole', 'rosa', 'pera', 'topo', 'naso', 'luna', 'casa', 'mare', 'pane', 'dito',
           'neve', 'vela', 'gatto', 'palla', 'nonno', 'letto', 'bocca', 'penna', 'sette', 'notte', 'torta',
           'porta', 'barca', 'dente', 'pollo', 'tetto']
@@ -1863,6 +1908,8 @@
       doppie: { nome: 'Caccia alla doppia', icona: '🔍', desc: 'Pala o palla? Ascolta bene', render: renderDoppie },
       lampo: { nome: 'Sillabe lampo', icona: '⚡', desc: 'Leggi veloce quello che appare (con un grande)', render: renderLampo },
       costruisci: { nome: 'Costruisci la parola', icona: '🧩', desc: 'Metti in fila i pezzi giusti', render: renderCostruisci },
+      gruppi: { nome: 'Gruppi difficili', icona: '🧷', desc: 'QU, CHI, GHI, GN, GL, SC, PR… e IE, UO', render: renderGruppi },
+      scaletta: { nome: 'Parole a scaletta', icona: '🪜', desc: 'Le parole lunghe, un pezzo alla volta (con un grande)', render: renderScaletta },
       dettato: { nome: 'Dettato sul quaderno', icona: '📒', desc: 'Ascolta, scrivi in corsivo e controlla', render: renderDettato }
     }
 
@@ -2097,6 +2144,13 @@
       const target = secondo ? coppia[2] : coppia[0]
       const emoji = secondo ? coppia[3] : coppia[1]
       const etichetta = conEtichetta ? `<p class="lab-etichetta">${coppia[4]}</p>` : ''
+      const trucchi = {
+        'F / V': 'Mano sulla gola: con la V la gola vibra, con la F esce solo aria.',
+        'P / B': 'Mano sulla gola: con la B la gola vibra, con la P no.',
+        'T / D': 'Mano sulla gola: con la D la gola vibra, con la T no.',
+        'C / G': 'Mano sulla gola: con la G la gola vibra, con la C no.'
+      }
+      if (conEtichetta && trucchi[coppia[4]]) istruzione += ' ' + trucchi[coppia[4]]
       renderScelta(c, {
         istruzione,
         ascolta: target,
@@ -2260,6 +2314,87 @@
 
       disegna()
       setTimeout(() => pronuncia(parola), 350)
+    }
+
+    // ---------- Gruppi difficili ----------
+
+    // Scrive la parola evidenziando il gruppo di lettere che si leggono insieme
+    function scriviConGruppo(parola, gruppo) {
+      const i = parola.indexOf(gruppo)
+      if (i < 0) return scrivi(parola, { doppie: true })
+      return scrivi(parola.slice(0, i)) +
+        `<span class="lab-doppia">${scrivi(gruppo)}</span>` +
+        scrivi(parola.slice(i + gruppo.length))
+    }
+
+    function renderGruppi(c) {
+      const [parola, emoji, gruppo, sbagli] = pescaPesata('gruppi', LAB_GRUPPI, it => it[0])
+      renderScelta(c, {
+        istruzione: 'Ascolta la parola. Come si scrive?',
+        ascolta: parola,
+        stimolo: `<p class="lab-etichetta">${labPrefs.maiuscolo ? gruppo.toUpperCase() : gruppo}</p><div class="lab-emoji">${emoji}</div>`,
+        opzioni: mescola([parola, ...sbagli]).map(w => ({ valore: w, html: scrivi(w) })),
+        classeOpzione: 'lab-opzione-parola',
+        giusta: parola,
+        chiave: parola,
+        dopo: `<div class="lab-emoji">${emoji}</div><div class="lab-parola">${scriviConGruppo(parola, gruppo)}</div>`
+      })
+    }
+
+    // ---------- Parole a scaletta (con un adulto) ----------
+
+    function renderScaletta(c) {
+      const conTrattini = pescaPesata('scaletta', LAB_SCALETTA, it => it)
+      const pezzi = conTrattini.split('-')
+      const parola = pezzi.join('')
+      let passo = 1
+
+      const card = el('div', 'lab-card')
+      const istr = el('p', 'lab-istruzione', 'Leggi ad alta voce. A ogni gradino si aggiunge un pezzo nuovo: rileggi tutto dall\'inizio!')
+      const scala = el('div', 'lab-scala')
+      card.append(istr, scala)
+
+      const fb = el('p', 'esercizio-feedback')
+      const az = el('div', 'esercizio-azioni-doppie')
+      c.append(card, fb, az)
+
+      function disegna() {
+        scala.innerHTML = ''
+        for (let k = 1; k <= passo; k++) {
+          const riga = el('div', 'lab-parola lab-gradino' + (k === passo ? ' attuale' : ''))
+          riga.innerHTML = pezzi.slice(0, k).map((p, j) =>
+            j === k - 1 && k === passo ? `<span class="lab-nuovo">${scrivi(p)}</span>` : scrivi(p)
+          ).join('<span class="lab-sep">·</span>')
+          scala.append(riga)
+        }
+        az.innerHTML = ''
+        if (passo < pezzi.length) {
+          const indietro = el('button', 'btn-esito btn-esito-no', '← Indietro')
+          indietro.disabled = passo === 1
+          indietro.addEventListener('click', () => { passo--; disegna() })
+          const avanti = el('button', 'btn-esito btn-esito-si', 'Letto! Avanti →')
+          avanti.addEventListener('click', () => { passo++; disegna() })
+          az.append(indietro, avanti)
+        } else {
+          const intera = el('div', 'lab-parola lab-intera', scrivi(parola, { doppie: true }))
+          const ascolta = el('button', 'lab-ascolta', '🔊')
+          ascolta.setAttribute('aria-label', 'Ascolta la parola')
+          ascolta.addEventListener('click', () => pronuncia(parola))
+          scala.append(intera, ascolta)
+          istr.textContent = 'Ora leggi la parola intera, tutta di fila. Poi ascoltala con il 🔊.'
+          const no = el('button', 'btn-esito btn-esito-no', '✗ Da ripetere')
+          const si = el('button', 'btn-esito btn-esito-si', '✓ Letta bene')
+          az.append(no, si)
+          const esito = (ok) => {
+            const azFinali = el('div', 'esercizio-azioni')
+            az.replaceWith(azFinali)
+            chiudiTurno({ chiave: conTrattini, ok, fb, az: azFinali, ripeti: parola })
+          }
+          si.addEventListener('click', () => esito(true))
+          no.addEventListener('click', () => esito(false))
+        }
+      }
+      disegna()
     }
 
     // ---------- Gioco 7: dettato sul quaderno ----------
